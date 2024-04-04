@@ -1,3 +1,8 @@
+-- 스키마 생성
+CREATE SCHEMA plannet;
+-- 스키마 사용
+USE plannet;
+
 -- 회원
 CREATE TABLE MEMBER (
 	M_NO int auto_increment,
@@ -28,8 +33,8 @@ CREATE TABLE BLOG (
 	REG_DATE datetime NOT NULL default current_timestamp,
 	MOD_DATE datetime NOT NULL default current_timestamp,
     constraint PK_B_NO primary key (B_NO),
-    constraint FK_B_M_NO foreign key (M_NO) references member on delete set null,
-    constraint FK_B_C_NO foreign key (C_NO) references category on delete set null
+    constraint FK_B_M_NO foreign key (M_NO) references member (M_NO) on delete set null,
+    constraint FK_B_C_NO foreign key (C_NO) references category (C_NO) on delete set null
 );
 
 -- 스케줄
