@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.project.plannet.member.mapper.MemberMapper">
+    <sql id="selectMemberSql">
+        SELECT
+            M_NO, SNS_ID, NICKNAME, STATUS_MSG, JOIN_DATE, WITHD_DATE
+        FROM MEMBER
+    </sql>
+
+    <resultMap id="memberResultMap" type="Member">
+        <id property="mNo"  column="M_NO"/>
+        <result property="snsId"    column="SNS_ID"/>
+        <result property="nickname"    column="NICKNAME"/>
+        <result property="statusMsg"    column="STATUS_MSG"/>
+        <result property="joinDate"    column="JOIN_DATE"/>
+        <result property="withdDate"    column="WITHD_DATE"/>
+    </resultMap>
+
+    <select id="selectMemberByKakaoToken" parameterType="string" resultMap="memberResultMap">
+        <include refid="selectMemberSql"/>
+        WHERE KAKAOTOKEN = #{kakaoToken}
+    </select>
+
+</mapper>

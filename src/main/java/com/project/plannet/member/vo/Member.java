@@ -1,0 +1,19 @@
+package com.project.plannet.member.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Member {
+    private int mNo;
+    private String snsId;
+    private String nickname;
+    private String statusMsg;
+    private Date joinDate;
+    private Date withdDate;
+}
