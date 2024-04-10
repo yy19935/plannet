@@ -16,4 +16,5 @@ public class Member {
     private String statusMsg;
     private Date joinDate;
     private Date withdDate;
+    private Boolean isMember; // true - 회원, false - 비회원 (가입)
 }

@@ -17,9 +17,13 @@
         <result property="withdDate"    column="WITHD_DATE"/>
     </resultMap>
 
-    <select id="selectMemberByKakaoToken" parameterType="string" resultMap="memberResultMap">
+    <select id="selectMemberBySnsId" parameterType="string" resultMap="memberResultMap">
         <include refid="selectMemberSql"/>
-        WHERE KAKAOTOKEN = #{kakaoToken}
+        WHERE SNS_ID = #{snsId}
     </select>
+
+    <insert id="insertMemberByKakao" parameterType="string">
+        INSERT INTO MEMBER (SNS_ID) VALUES (#{snsId})
+    </insert>
 
 </mapper>

@@ -5,5 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberMapper {
-    Member selectMemberByKakaoToken(String kakaoToken);
+    Member selectMemberBySnsId(String snsId);
+    int insertMemberByKakao(String snsId);
 }
