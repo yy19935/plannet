@@ -1,7 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Index = () => {
+export const Index = () => {
+
+
+  function KakaoLoginButton() {
+    // 카카오 로그인 요청을 보내는 함수
+    const handleKakaoLogin = () => {
+        // 카카오 로그인 실행
+        window.Kakao.Auth.login({
+            success: function (authObj) {
+                // 로그인 성공 시 카카오에서 제공하는 인증 코드를 얻음
+                const code = authObj.code;
+
+                // 카카오 로그인 요청을 백엔드로 보냄
+                fetch(`/kakaoLogin?code=${code}`)
+                    .then(response => {
+                        if (response.ok) {
+                            // 로그인 성공 시 추가 작업 수행 (예: 리다이렉트)
+                            window.location.href = '/';
+                        } else {
+                            // 로그인 실패 시 에러 처리
+                            console.error('로그인 실패:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('네트워크 에러:', error);
+                    });
+            },
+            fail: function (err) {
+                // 카카오 로그인 실패 시 처리
+                console.error('카카오 로그인 실패:', err);
+            },
+        });
+    };}
+
   return (
     <LoginStyle>
       <Center>
@@ -9,13 +42,13 @@ const Index = () => {
           Sign-up
         </Title>
         <Text>sign up with social account</Text>
-        <LoginButton>Google Login</LoginButton>
+        <LoginButton >Google Login</LoginButton>
         <NaverButton>Naver Login</NaverButton>
-        <KakaoButton>Kakao Login</KakaoButton>
+        <KakaoButton onClick={KakaoLoginButton}>Kakao Login</KakaoButton>
       </Center>
     </LoginStyle>
   );
-};
+}
 
 export default Index;
 
