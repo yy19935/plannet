@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MemberMapper {
     Member selectMemberBySnsId(String snsId);
-    int insertMemberByKakao(String snsId);
+    int insertMemberByKakao(Member member);
 }

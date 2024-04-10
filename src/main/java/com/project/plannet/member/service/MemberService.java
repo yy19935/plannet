@@ -33,7 +33,8 @@ public class MemberService {
 
     private Member joinKakaoMember(String snsId){
         Member member = new Member();
-        int cnt = mapper.insertMemberByKakao(snsId);
+        member.setSnsId(snsId);
+        int cnt = mapper.insertMemberByKakao(member);
 
         if (cnt > 0) {
             member.setIsMember(false);

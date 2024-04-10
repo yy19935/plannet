@@ -22,8 +22,11 @@
         WHERE SNS_ID = #{snsId}
     </select>
 
-    <insert id="insertMemberByKakao" parameterType="string">
+    <insert id="insertMemberByKakao" parameterType="Member">
         INSERT INTO MEMBER (SNS_ID) VALUES (#{snsId})
+        <selectKey resultType="int" order="AFTER" keyProperty="mNo" keyColumn="M_NO">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
 </mapper>
