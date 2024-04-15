@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class File {
+public class PlanNetFile {
     private int fNO;
     private int pNo;
     private String originalFileName;
     private String fileName;
     private String filePath;
     private int fileSize;
+    private String pType;
 }

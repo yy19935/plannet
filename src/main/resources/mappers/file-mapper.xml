@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.project.plannet.common.mapper.FileMapper">
+    <resultMap id="fileResultMap" type="PlanNetFile">
+        <id property="fNo" column="F_NO"/>
+        <result property="pNo" column="P_NO"/>
+        <result property="originalFileName" column="ORIGINAL_FILE_NM"/>
+        <result property="fileName" column="FILE_NM"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="pType" column="P_TYPE"/>
+    </resultMap>
+
+    <insert id="insertFile" parameterType="PlanNetFile">
+        INSERT INTO FILE (
+            P_NO, ORIGINAL_FILE_NM, FILE_NM, FILE_PATH, FILE_SIZE, P_TYPE
+        ) VALUES (
+            #{pNo}, #{originalFileName}, #{fileName}, #{filePath}, #{fileSize}, #{pType}
+        )
+    </insert>
+
+    <update id="updateFile" parameterType="PlanNetFile">
+        UPDATE FILE
+        SET
+            ORIGINAL_FILE_NM = #{originalFileName},
+            FILE_NM = #{fileName},
+            FILE_SIZE = #{fileSize}
+        WHERE P_NO = #{pNo} AND P_TYPE = #{pType}
+    </update>
+
+    <delete id="deleteFile" parameterType="int">
+        DELETE FROM FILE WHERE F_NO = #{fNo}
+    </delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

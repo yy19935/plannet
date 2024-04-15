@@ -28,5 +28,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+    
+    <update id="updateMember" parameterType="Member">
+        UPDATE MEMBER SET NICKNAME = #{nickname}, STATUS_MSG = #{statusMsg}
+        WHERE MNO = #{mNo}
+    </update>
 
 </mapper>

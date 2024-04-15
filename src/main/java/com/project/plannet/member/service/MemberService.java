@@ -1,5 +1,6 @@
 package com.project.plannet.member.service;
 
+
 import com.project.plannet.member.mapper.MemberMapper;
 import com.project.plannet.member.vo.Member;
 import lombok.RequiredArgsConstructor;
@@ -42,4 +43,10 @@ public class MemberService {
 
         return member;
     }
+
+    // 회원 정보 수정
+    public int update(Member member){
+        return mapper.updateMember(member);
+    }
+
 }
