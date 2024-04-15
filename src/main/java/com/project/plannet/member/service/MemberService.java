@@ -1,11 +1,17 @@
 package com.project.plannet.member.service;
 
 
+import com.project.plannet.common.service.FileService;
+import com.project.plannet.common.vo.PlanNetFile;
 import com.project.plannet.member.mapper.MemberMapper;
 import com.project.plannet.member.vo.Member;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,7 @@ public class MemberService {
     * */
 
     private final MemberMapper mapper;
+    private final FileService fileService;
 
     public Member checkKakaoMember(String snsId){
         Member member = mapper.selectMemberBySnsId(snsId);
@@ -45,8 +52,29 @@ public class MemberService {
     }
 
     // 회원 정보 수정
-    public int update(Member member){
-        return mapper.updateMember(member);
-    }
+    public Map<String, Object> update(Member member, MultipartFile file){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
 
+        int cnt = mapper.updateMember(member);
+
+        if (cnt > 0 && !file.isEmpty()) {
+            PlanNetFile fileInfo = fileService.selectFile(member.getMemberNo(), "MB");
+            PlanNetFile fileRes = null;
+
+            if (fileInfo != null) {
+                fileRes = fileService.updateFile(file, fileInfo, "MB", member.getMemberNo());
+            } else {
+                fileRes = fileService.insertFile(file, "MB", member.getMemberNo());
+            }
+
+            resultMap.put("memberInfo", member);
+            resultMap.put("fileInfo", fileRes);
+
+        } else {
+            if (cnt <= 0) {
+                resultMap.put("message", "member update fail");
+            }
+        }
+        return resultMap;
+    }
 }

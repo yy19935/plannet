@@ -8,14 +8,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
 
-    private FileMapper mapper;
+    private final FileMapper mapper;
 
-    final static private String filePath = "/Users/kimjoohwan/Desktop/Dev/";
+    final static private String filePath = "C:\\planNetFile";
 
     // 실제 파일 저장
     private PlanNetFile saveFile(MultipartFile upFile){
@@ -43,6 +45,16 @@ public class FileService {
         return convertFileVo(originalFileName, fileName, fileSize);
     }
 
+    // 파일 조회
+    public PlanNetFile selectFile(int pNo, String pType) {
+        Map<String, Object> fileParams = new HashMap<String, Object>();
+
+        fileParams.put("pNo", pNo);
+        fileParams.put("pType", pType);
+
+        return mapper.selectFile(fileParams);
+    }
+
     // 파일 저장
     public PlanNetFile insertFile(MultipartFile upFile, String pType, int pNo){
         // 실제 파일 저장
@@ -62,12 +74,12 @@ public class FileService {
     // 파일 수정
     public PlanNetFile updateFile(MultipartFile upFile, PlanNetFile planNetFile, String pType, int pNo){
         // 실제 파일 삭제
-        boolean delRes = deleteFile(filePath + planNetFile.getFileName());
+        boolean delRes = deleteFile(filePath + "/" + planNetFile.getFileName());
         PlanNetFile updateFileVo = null;
 
         if (delRes){
             // 파일 정보 DB 삭제
-            int updateFileRes = mapper.deleteFile(planNetFile.getFNO());
+            int updateFileRes = mapper.deleteFile(planNetFile.getFNo());
             if (updateFileRes > 0) {
                 // 파일 저장
                 updateFileVo = insertFile(upFile, pType, pNo);
@@ -92,6 +104,7 @@ public class FileService {
         planNetFile.setOriginalFileName(orgFileNm);
         planNetFile.setFileName(fileNm);
         planNetFile.setFileSize(fileSize);
+        planNetFile.setFilePath(filePath);
 
         return planNetFile;
     }

@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-    private int mNo;
+    private int memberNo;
     private String snsId;
     private String nickname;
     private String statusMsg;

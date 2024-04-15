@@ -9,7 +9,7 @@
     </sql>
 
     <resultMap id="memberResultMap" type="Member">
-        <id property="mNo"  column="M_NO"/>
+        <id property="memberNo"  column="M_NO"/>
         <result property="snsId"    column="SNS_ID"/>
         <result property="nickname"    column="NICKNAME"/>
         <result property="statusMsg"    column="STATUS_MSG"/>
@@ -24,14 +24,14 @@
 
     <insert id="insertMemberByKakao" parameterType="Member">
         INSERT INTO MEMBER (SNS_ID) VALUES (#{snsId})
-        <selectKey resultType="int" order="AFTER" keyProperty="mNo" keyColumn="M_NO">
+        <selectKey resultType="int" order="AFTER" keyProperty="memberNo" keyColumn="M_NO">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
-    
+
     <update id="updateMember" parameterType="Member">
         UPDATE MEMBER SET NICKNAME = #{nickname}, STATUS_MSG = #{statusMsg}
-        WHERE M_NO = #{mNo}
+        WHERE M_NO = #{memberNo}
     </update>
 
 </mapper>

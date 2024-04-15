@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlanNetFile {
-    private int fNO;
+    private int fNo;
     private int pNo;
     private String originalFileName;
     private String fileName;

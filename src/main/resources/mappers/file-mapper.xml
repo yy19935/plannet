@@ -12,6 +12,10 @@
         <result property="pType" column="P_TYPE"/>
     </resultMap>
 
+    <select id="selectFile" parameterType="map" resultMap="fileResultMap">
+        SELECT * FROM FILE WHERE P_NO = #{pNo} AND P_TYPE = #{pType}
+    </select>
+
     <insert id="insertFile" parameterType="PlanNetFile">
         INSERT INTO FILE (
             P_NO, ORIGINAL_FILE_NM, FILE_NM, FILE_PATH, FILE_SIZE, P_TYPE
