@@ -183,3 +183,5 @@ insert into common_code (pn_code, pn_text) values ('END_REC', '종료');
 insert into common_code (pn_code, pn_text) values ('SUCCESS', '성공');
 insert into common_code (pn_code, pn_text) values ('FAIL', '실패');
 
+alter table file add column P_TYPE varchar(2) NOT NULL;
+
