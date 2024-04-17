@@ -7,39 +7,40 @@ import { useNavigate } from 'react-router-dom'
 
 
 const ProfileEdit = () => {
-
   // 사진등록 미리보기
-  const [previewImage, setPreviewImage] = useState('')
+  const [previewImage, setPreviewImage] = useState('');
   const [nickname, setNickname] = useState('');  
-  const [statusMsg, setStatusMsg] = useState('');  
+  const [statusMsg, setStatusMsg] = useState('');
+  const [file, setFile] = useState(null);  // 파일 상태 추가
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const selectedFile = e.target.files[0];
 
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
+    if (selectedFile) {
+      const imageURL = URL.createObjectURL(selectedFile);
       setPreviewImage(imageURL);
+      setFile(selectedFile); 
     }
   };
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 방지합니다.
-  
+    e.preventDefault();
+
     try {
-      const memberData = {memberNo:1, nickname, statusMsg};
+      const memberData = {memberNo: 1, nickname, statusMsg};
       const formData = new FormData();
       
-      formData.append('member', memberData);
-      formData.append('file', previewImage); 
-  
+      formData.append('member', JSON.stringify(memberData));
+      formData.append('file', file);  
 
-  
       const postResponse = await axios.post('http://localhost:8080/mypage/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-  
+
       console.log(postResponse.data);
       alert('프로필이 업데이트 되었습니다.');
 
