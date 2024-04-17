@@ -24,7 +24,7 @@ const ProfileEdit = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 방지합니다.
+    e.preventDefault(); 
 
     try {
       const data = {
@@ -32,16 +32,10 @@ const ProfileEdit = () => {
         statusMsg: statusMsg
       };
       console.log(data)
-  
       const response = await axios.post('/mypage/update', data);
-      
-      // 서버 응답 처리
       console.log(response.data);
-  
-      // 성공적으로 업데이트된 경우에는 사용자에게 메시지를 보여줄 수 있습니다.
       alert('프로필이 업데이트 되었습니다.');
     } catch (error) {
-      // 에러 처리
       console.error('프로필 업데이트 실패:', error);
       alert('프로필 업데이트에 실패했습니다.');
     }
