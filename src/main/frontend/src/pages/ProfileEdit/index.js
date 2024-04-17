@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 // import './index.css'
 
@@ -11,30 +12,40 @@ const ProfileEdit = () => {
   const [previewImage, setPreviewImage] = useState('')
   const [nickname, setNickname] = useState('');  
   const [statusMsg, setStatusMsg] = useState('');  
+
   const handleFileInputChange = (e) => {
-    const file = e.target.files[0]
-    previewFile(file)
-  }
-  const previewFile = (file) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend = () => {
-      setPreviewImage(reader.result)
-    }
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault(); 
-
-    try {
-      const data = {
-        nickname: nickname,
-        statusMsg: statusMsg
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);  // 데이터 URL을 상태에 저장
       };
-      console.log(data)
-      const response = await axios.post('/mypage/update', data);
-      console.log(response.data);
+    }
+  };
+  const navigate = useNavigate()
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 방지합니다.
+  
+    try {
+      const memberData = {memberNo:1, nickname, statusMsg};
+      const formData = new FormData();
+      
+      formData.append('member', memberData);
+      formData.append('file', previewImage); 
+  
+
+  
+      const postResponse = await axios.post('/mypage/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      console.log(postResponse.data);
       alert('프로필이 업데이트 되었습니다.');
+
+      navigate('/');
     } catch (error) {
       console.error('프로필 업데이트 실패:', error);
       alert('프로필 업데이트에 실패했습니다.');
