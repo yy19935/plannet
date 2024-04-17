@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import styled from 'styled-components';
+import styled from 'styled-components'
+import axios from 'axios'
+
 // import './index.css'
 
 
 const ProfileEdit = () => {
 
   // 사진등록 미리보기
-  const [previewIamage, setPreviewIamage] = useState('')
+  const [previewImage, setPreviewImage] = useState('')
+  const [nickname, setNickname] = useState('');  
+  const [statusMsg, setStatusMsg] = useState('');  
   const handleFileInputChange = (e) => {
     const file = e.target.files[0]
     previewFile(file)
@@ -15,47 +19,79 @@ const ProfileEdit = () => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
-      setPreviewIamage(reader.result)
+      setPreviewImage(reader.result)
     }
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 방지합니다.
+
+    try {
+      const data = {
+        nickname: nickname,
+        statusMsg: statusMsg
+      };
+      console.log(data)
+  
+      const response = await axios.post('/mypage/update', data);
+      
+      // 서버 응답 처리
+      console.log(response.data);
+  
+      // 성공적으로 업데이트된 경우에는 사용자에게 메시지를 보여줄 수 있습니다.
+      alert('프로필이 업데이트 되었습니다.');
+    } catch (error) {
+      // 에러 처리
+      console.error('프로필 업데이트 실패:', error);
+      alert('프로필 업데이트에 실패했습니다.');
+    }
+  };
 
   return (
     <ProfileEditContainer>
       <div className='container'>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className='ImageBox'>
-            {previewIamage && (
-              <img src={previewIamage} alt='미리보기' />
-            )}
-            <label htmlFor="fileInput">파일선택</label>
+            {previewImage && <img src={previewImage} alt='미리보기' />}
+            <label htmlFor='fileInput'>파일선택</label>
           </div>
 
-
-          <input type="file" style={{ display: 'none' }} id="fileInput" onChange={handleFileInputChange} />
-
+          <input
+            type='file'
+            style={{ display: 'none' }}
+            id='fileInput'
+            onChange={handleFileInputChange}
+          />
 
           <div className='profileBox'>
             <span>닉네임</span>
-            <input className='nameInput' maxlength="20" placeholder=' 최대 20자까지 가능' />
+            <input
+              className='nameInput'
+              name='nickname'
+              maxLength='20'
+              placeholder='최대 20자까지 가능'
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
 
             <div>
               <span>프로필 메세지</span>
               <textarea
-                maxlength="100"
-                placeholder=" 프로필 메시지를 입력하세요.(최대 100자)"
-              // value={message}
-              // onChange={(e) => setMessage(e.target.value)}
+                maxLength='100'
+                name='statusMsg'
+                placeholder='프로필 메시지를 입력하세요.(최대 100자)'
+                value={statusMsg}
+                onChange={(e) => setStatusMsg(e.target.value)}
               />
             </div>
           </div>
 
-          <button type="submit">등록하기</button>
+          <button type='submit'>등록하기</button>
         </form>
       </div>
-
     </ProfileEditContainer>
-  )
-}
+  );
+};
 
 
 
