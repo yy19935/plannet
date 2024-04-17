@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.project.plannet.studygroup.mapper.StudyGroupMapper">
+    <resultMap id="studyGroupResultMap" type="StudyGroup">
+        <id property="studyGroupNo" column="SG_NO"/>
+        <result property="memberNo" column="M_NO"/>
+        <result property="nickname" column="NICKNAME"/>
+        <result property="groupName" column="GROUP_NM"/>
+        <result property="groupDesc" column="GROUP_DESC"/>
+        <result property="groupCategory" column="SG_CATEGORY"/>
+        <result property="memberCnt" column="MEMBER_CNT"/>
+        <result property="readCnt" column="READ_CNT"/>
+        <result property="createDate" column="CREATE_DATE"/>
+        <result property="modDate" column="MOD_DATE"/>
+        <result property="deleteDate" column="DELETE_DATE"/>
+    </resultMap>
+
+    <select id="selectStudyGroupList" resultMap="studyGroupResultMap" parameterType="map">
+        SELECT SG_NO, M.M_NO, M.NICKNAME, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT
+        FROM STUDY_GROUP S
+        LEFT OUTER JOIN MEMBER M
+        ON S.M_NO = M.M_NO
+        <if test="searchValue != null">
+        WHERE S.GROUP_NM like '%${searchValue}%'
+            OR S.GROUP_DESC like '%${searchValue}%'
+            OR S.SG_CATEGORY like '%${searchValue}%'
+        </if>
+        ORDER BY S.SG_NO DESC
+    </select>
+
+    <insert id="insertStudyGroup" parameterType="StudyGroup">
+        INSERT INTO STUDY_GROUP(SG_NO, M_NO, GROUP_NM, GROUP_DESC, SG_CATEGORY, CREATE_DATE, MOD_DATE)
+        VALUES(0, #{memberNo}, #{groupName}, #{groupDesc}, #{groupCategory}, DEFAULT, DEFAULT)
+    </insert>
+
+    <update id="updateReadCount" parameterType="map">
+        UPDATE STUDY_GROUP SET READ_CNT = #{readCnt} WHERE SG_NO = #{studyGroupNo}
+    </update>
+
+
+</mapper>
