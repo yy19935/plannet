@@ -13,14 +13,12 @@ const ProfileEdit = () => {
   const [nickname, setNickname] = useState('');  
   const [statusMsg, setStatusMsg] = useState('');  
 
-  const handleFileInputChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);  // 데이터 URL을 상태에 저장
-      };
+      const imageURL = URL.createObjectURL(file);
+      setPreviewImage(imageURL);
     }
   };
   const navigate = useNavigate()
@@ -36,7 +34,7 @@ const ProfileEdit = () => {
   
 
   
-      const postResponse = await axios.post('/mypage/update', formData, {
+      const postResponse = await axios.post('http://localhost:8080/mypage/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -65,7 +63,7 @@ const ProfileEdit = () => {
             type='file'
             style={{ display: 'none' }}
             id='fileInput'
-            onChange={handleFileInputChange}
+            onChange={handleFileChange}
           />
 
           <div className='profileBox'>
