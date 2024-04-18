@@ -5,7 +5,6 @@ import com.project.plannet.member.service.MemberService;
 import com.project.plannet.member.vo.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,7 +47,7 @@ public class MemberController {
         return memberService.selectMember(memberNo);
     }
 
-    @PostMapping("/mypage/update")
+    @PostMapping("/myPage/update")
     public Map<String, Object> update(@ModelAttribute Member member, @RequestParam MultipartFile file){
         return memberService.update(member, file);
     }
