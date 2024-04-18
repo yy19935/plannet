@@ -7,65 +7,102 @@ import { useNavigate } from 'react-router-dom'
 
 
 const ProfileEdit = () => {
-
   // 사진등록 미리보기
-  const [previewImage, setPreviewImage] = useState('')
   const [nickname, setNickname] = useState('');  
-  const [statusMsg, setStatusMsg] = useState('');  
+  const [statusMsg, setStatusMsg] = useState('');
+  const [file, setFile] = useState(); 
+  const [previewUrl, setPreviewUrl] = useState('');
 
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+  //회원번호 업로드
+  const handlename = (e) => {
+    e.preventDefault();
+    setNickname("1")
+  }
+
+  //닉네임 업로드
+  const handleName = (e) => {
+    e.preventDefault();
+    setNickname(e.target.value)
+  }
+
+  //상태메세지 업로드
+  const handleStatus = (e) => {
+    e.preventDefault();
+    setStatusMsg(e.target.value)
+  }
+
+
+  //이미지 업로드
+  const onChangeImg = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0]
+      formData.append('file', uploadFile)
+      setFile(uploadFile)
+
+
+
+      // 파일을 읽기 위한 FileReader 객체 생성
       const reader = new FileReader();
-      reader.readAsDataURL(file);
       reader.onloadend = () => {
-        setPreviewImage(reader.result);  // 데이터 URL을 상태에 저장
+        setPreviewUrl(reader.result);
       };
+      if (uploadFile) {
+        reader.readAsDataURL(uploadFile);
+      }
     }
-  };
-  const navigate = useNavigate()
+
+
+  }
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 방지합니다.
-  
-    try {
-      const memberData = {memberNo:1, nickname, statusMsg};
-      const formData = new FormData();
-      
-      formData.append('member', memberData);
-      formData.append('file', previewImage); 
-  
+    e.preventDefault();
+    const formData = new FormData()
+    const memberData = {memberNo: 1, nickname, statusMsg};
+    formData.append('file', file)
+    formData.append('member', JSON.stringify(memberData));
 
-  
-      const postResponse = await axios.post('/mypage/update', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-  
-      console.log(postResponse.data);
-      alert('프로필이 업데이트 되었습니다.');
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8080/mypage/update',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then((result) => { alert('프로필이 업데이트 되었습니다.')
+      console.log(result.date)
       navigate('/');
-    } catch (error) {
+    })
+    .catch ((error) => {
       console.error('프로필 업데이트 실패:', error);
       alert('프로필 업데이트에 실패했습니다.');
-    }
+    })
   };
+    
 
   return (
     <ProfileEditContainer>
       <div className='container'>
         <form onSubmit={handleSubmit}>
           <div className='ImageBox'>
-            {previewImage && <img src={previewImage} alt='미리보기' />}
             <label htmlFor='fileInput'>파일선택</label>
+            {/* 이미지 미리보기 */}
+            {previewUrl && <img src={previewUrl} alt='프로필 이미지 미리보기' />}
           </div>
 
           <input
             type='file'
             style={{ display: 'none' }}
             id='fileInput'
-            onChange={handleFileInputChange}
+            onChange={onChangeImg}
           />
 
           <div className='profileBox'>
@@ -75,7 +112,6 @@ const ProfileEdit = () => {
               name='nickname'
               maxLength='20'
               placeholder='최대 20자까지 가능'
-              value={nickname}
               onChange={(e) => setNickname(e.target.value)}
             />
 
@@ -85,7 +121,6 @@ const ProfileEdit = () => {
                 maxLength='100'
                 name='statusMsg'
                 placeholder='프로필 메시지를 입력하세요.(최대 100자)'
-                value={statusMsg}
                 onChange={(e) => setStatusMsg(e.target.value)}
               />
             </div>
@@ -97,7 +132,6 @@ const ProfileEdit = () => {
     </ProfileEditContainer>
   );
 };
-
 
 
 export default ProfileEdit
