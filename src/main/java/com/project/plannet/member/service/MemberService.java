@@ -65,7 +65,7 @@ public class MemberService {
             resultMap.put("result", "fail");
             if (member == null) {
                 resultMap.put("message", "member select fail");
-            } else if (file == null) {
+            } else {
                 resultMap.put("message", "file select fail");
             }
         }
@@ -74,13 +74,13 @@ public class MemberService {
 
     // 회원 정보 수정
     public Map<String, Object> update(Member member, MultipartFile file){
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+        Map<String, Object> resultMap = new HashMap<>();
 
         int cnt = mapper.updateMember(member);
 
         if (cnt > 0 && !file.isEmpty()) {
             PlanNetFile fileInfo = fileService.selectFile(member.getMemberNo(), "MB");
-            PlanNetFile fileRes = null;
+            PlanNetFile fileRes;
 
             if (fileInfo != null) {
                 fileRes = fileService.updateFile(file, fileInfo, "MB", member.getMemberNo());
