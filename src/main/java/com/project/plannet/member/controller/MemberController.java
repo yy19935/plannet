@@ -43,8 +43,13 @@ public class MemberController {
         return null;
     }
 
+    @GetMapping("/myPage/{memberNo}")
+    public Map<String, Object> selectMember(@PathVariable("memberNo") int memberNo) {
+        return memberService.selectMember(memberNo);
+    }
+
     @PostMapping("/mypage/update")
-    public Map<String, Object> update(@RequestPart Member member, @RequestPart MultipartFile file){
+    public Map<String, Object> update(@ModelAttribute Member member, @RequestParam MultipartFile file){
         return memberService.update(member, file);
     }
 }

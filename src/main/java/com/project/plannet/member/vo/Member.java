@@ -1,5 +1,6 @@
 package com.project.plannet.member.vo;
 
+import com.project.plannet.common.vo.PlanNetFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

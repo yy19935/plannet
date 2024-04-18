@@ -51,6 +51,27 @@ public class MemberService {
         return member;
     }
 
+    public Map<String, Object> selectMember(int memberNo) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Member member = mapper.selectMemberByMNo(memberNo);
+        PlanNetFile file = fileService.selectFile(memberNo, "MB");
+
+        if(member != null && file != null) {
+            resultMap.put("result", "success");
+            resultMap.put("member", member);
+            resultMap.put("file", file);
+        } else {
+            resultMap.put("result", "fail");
+            if (member == null) {
+                resultMap.put("message", "member select fail");
+            } else if (file == null) {
+                resultMap.put("message", "file select fail");
+            }
+        }
+        return resultMap;
+    }
+
     // 회원 정보 수정
     public Map<String, Object> update(Member member, MultipartFile file){
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -67,12 +88,19 @@ public class MemberService {
                 fileRes = fileService.insertFile(file, "MB", member.getMemberNo());
             }
 
-            resultMap.put("memberInfo", member);
-            resultMap.put("fileInfo", fileRes);
+            if (fileRes != null) {
+                resultMap.put("result", "success");
+            } else {
+                resultMap.put("result", "fail");
+                resultMap.put("message", "file upload fail");
+            }
 
         } else {
+            resultMap.put("result", "fail");
             if (cnt <= 0) {
                 resultMap.put("message", "member update fail");
+            } else if (file.isEmpty()) {
+                resultMap.put("message", "file is empty");
             }
         }
         return resultMap;

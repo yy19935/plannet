@@ -8,4 +8,5 @@ public interface MemberMapper {
     Member selectMemberBySnsId(String snsId);
     int insertMemberByKakao(Member member);
     int updateMember(Member member);
+    Member selectMemberByMNo(int memberNo);
 }

@@ -9,17 +9,23 @@
     </sql>
 
     <resultMap id="memberResultMap" type="Member">
-        <id property="memberNo"  column="M_NO"/>
-        <result property="snsId"    column="SNS_ID"/>
-        <result property="nickname"    column="NICKNAME"/>
-        <result property="statusMsg"    column="STATUS_MSG"/>
-        <result property="joinDate"    column="JOIN_DATE"/>
-        <result property="withdDate"    column="WITHD_DATE"/>
+        <id property="memberNo" column="M_NO"/>
+        <result property="snsId" column="SNS_ID"/>
+        <result property="nickname" column="NICKNAME"/>
+        <result property="statusMsg" column="STATUS_MSG"/>
+        <result property="joinDate" column="JOIN_DATE"/>
+        <result property="withdDate" column="WITHD_DATE"/>
     </resultMap>
 
     <select id="selectMemberBySnsId" parameterType="string" resultMap="memberResultMap">
         <include refid="selectMemberSql"/>
         WHERE SNS_ID = #{snsId}
+    </select>
+
+    <select id="selectMemberByMNo" parameterType="int" resultMap="memberResultMap">
+        SELECT *
+        FROM member m
+        WHERE m.M_NO = #{memberNo};
     </select>
 
     <insert id="insertMemberByKakao" parameterType="Member">
