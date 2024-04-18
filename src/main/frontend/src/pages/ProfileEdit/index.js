@@ -13,23 +13,8 @@ const ProfileEdit = () => {
   const [file, setFile] = useState(); 
   const [previewUrl, setPreviewUrl] = useState('');
 
-  //회원번호 업로드
-  const handlename = (e) => {
-    e.preventDefault();
-    setNickname("1")
-  }
 
-  //닉네임 업로드
-  const handleName = (e) => {
-    e.preventDefault();
-    setNickname(e.target.value)
-  }
 
-  //상태메세지 업로드
-  const handleStatus = (e) => {
-    e.preventDefault();
-    setStatusMsg(e.target.value)
-  }
 
 
   //이미지 업로드
@@ -61,9 +46,15 @@ const ProfileEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData()
-    const memberData = {memberNo: 1, nickname, statusMsg};
-    formData.append('file', file)
-    formData.append('member', JSON.stringify(memberData));
+    // const memberData = {memberNo: 6, nickname, statusMsg};
+    // formData.append('file', file)
+    // formData.append('member', JSON.stringify(memberData));
+    const memberNo = 6
+    formData.append('member', memberNo);
+    formData.append('nickname', nickname);
+    formData.append('statusMsg', statusMsg);
+    formData.append('file', file);
+
 
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
@@ -71,7 +62,7 @@ const ProfileEdit = () => {
 
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/mypage/update',
+      url: `http://localhost:8080/myPage/update`,
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data'
