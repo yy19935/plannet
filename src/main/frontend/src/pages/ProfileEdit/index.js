@@ -70,7 +70,7 @@ const ProfileEdit = () => {
     })
     .then((result) => { alert('프로필이 업데이트 되었습니다.')
       console.log(result.date)
-      navigate('/');
+      navigate('/main');
     })
     .catch ((error) => {
       console.error('프로필 업데이트 실패:', error);
