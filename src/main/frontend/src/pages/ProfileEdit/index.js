@@ -50,7 +50,7 @@ const ProfileEdit = () => {
     // formData.append('file', file)
     // formData.append('member', JSON.stringify(memberData));
     const memberNo = 6
-    formData.append('memberNo', memberNo.toString());  // memberNo를 문자열로 변환하여 추가
+    formData.append('memberNo', memberNo); 
     formData.append('nickname', nickname);
     formData.append('statusMsg', statusMsg);
     formData.append('file', file)
