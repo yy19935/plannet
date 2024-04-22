@@ -17,7 +17,7 @@
     </resultMap>
 
     <select id="selectStudyGroupList" resultMap="studyGroupResultMap" parameterType="map">
-        SELECT SG_NO, M.M_NO, M.NICKNAME, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT
+        SELECT SG_NO, M.M_NO, M.NICKNAME, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT, CREATE_DATE, MOD_DATE, DELETE_DATE
         FROM STUDY_GROUP S
         LEFT OUTER JOIN MEMBER M
         ON S.M_NO = M.M_NO
@@ -25,6 +25,10 @@
         WHERE S.GROUP_NM like '%${searchValue}%'
             OR S.GROUP_DESC like '%${searchValue}%'
             OR S.SG_CATEGORY like '%${searchValue}%'
+        </if>
+        <if test="groupCategory != null">
+            AND S.GROUP_NM like '%${GROUP_NM}%'
+            OR S.GROUP_DESC like '%${GROUP_DESC}%'
         </if>
         ORDER BY S.SG_NO DESC
     </select>
