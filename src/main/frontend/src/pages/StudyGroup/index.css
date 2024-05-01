@@ -23,11 +23,21 @@ ul.pagination li {
 }
 
 ul.pagination li:first-child{
-
+  background-color: transparent;
+}
+ul.pagination li:first-child a{
+  color:#1c1c1c;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 ul.pagination li:last-child{
-
+  background-color: transparent;
+}
+ul.pagination li:last-child a{
+  color:#1c1c1c;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 ul.pagination li a {

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import Pagination from 'react-js-pagination'
 import './index.css'
+import CreatingStudyGroupModal from '../../component/CreatingStudyGroupModal';
 
 
 const StudyGroup = () => {
@@ -10,6 +11,8 @@ const StudyGroup = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  const [modalOpen, setModalOpen] = useState(false)
+
 
   const [selectItem, setSelectItem] = useState(null)
   const menuClick = (item) => {
@@ -25,20 +28,20 @@ const StudyGroup = () => {
       <Container>
 
         <Text>나의 스터디 그룹</Text>
-        <BoxContainer>
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-        </BoxContainer>
+        <BoxContainer1>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        </BoxContainer1>
 
         <Text>인기 스터디 그룹</Text>
-        <BoxContainer>
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-        </BoxContainer>
+        <BoxContainer1>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
+        </BoxContainer1>
 
         <Dropdown>
           <DropdownButton onClick={toggleDropdown}>
@@ -50,31 +53,24 @@ const StudyGroup = () => {
             <a href="#" onClick={() => menuClick('HTML/CSS')}>HTML/CSS</a>
           </DropdownList>
 
-          <div className=" ">+</div>
-          <input placeholder='검색'></input>
+          {/* Plus 컴포넌트에 onClick 이벤트 핸들러 추가 */}
+          <Plus>+</Plus>
+          <GroupSearchInput placeholder='검색'></GroupSearchInput>
         </Dropdown>
-        <BoxContainer>
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-          <StudyGroupBox />
-        </BoxContainer>
+        <BoxContainer2>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
+        </BoxContainer2>
 
 
         <Pagination
@@ -86,7 +82,7 @@ const StudyGroup = () => {
           nextPageText={"›"} // "다음"을 나타낼 텍스트
           // onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
         />
-
+          {modalOpen && <CreatingStudyGroupModal setModalOpen={setModalOpen} />}
       </Container>
 
     )
@@ -143,30 +139,47 @@ const Container = styled.div`
     background-color: #ececec;
   }
 `;
-const BoxContainer = styled.div`
+const BoxContainer1 = styled.div`
+  display: flex;
+  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
+  justify-content: center; /* 요소들을 간격을 둬서 나열 */
+`
+const StudyGroupBox = styled.div`
+  margin: 35px 8px;
+  width: 290px;
+  height: 180px;
+  border-radius: 20px;
+  background-color: #1c1c1c;
+  flex-shrink: 0;
+  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
+
+`
+const BoxContainer2 = styled.div`
   display: flex;
   flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
   margin-bottom: 20px;
   justify-content: center; /* 요소들을 간격을 둬서 나열 */
 `
-const Text = styled.div`
-
-`
-const StudyGroupBox = styled.div`
-  margin: 25px 28px;
+const StudyGroupBox2 = styled.div`
+  margin: 30px 28px;
   width: 290px;
   height: 180px;
   border-radius: 20px;
-  background-color: red;
+  background-color: #1c1c1c;
   flex-shrink: 0;
   flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
 
 `
+const Text = styled.div`
+
+`
+
 
 
 const Dropdown = styled.li`
 position : relative;
-display : inline-block;
+display : flex;
+
 `;
 const DropdownButton = styled.button`
 position : relative;
@@ -174,7 +187,7 @@ display : inline-block;
 border-radius: 80px;
 cursor: pointer;
 border-width: 0;
-width: 100px;
+width: 180px;
 height: 35px;
 background-color: #1c1c1c;
 box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
@@ -199,4 +212,21 @@ border-radius: 4px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 padding: 0;
 margin: 0;
+`
+
+
+const GroupSearchInput = styled.input`
+width: 300px;
+height: 35px;
+padding-right: 0;
+margin-left: auto;
+padding-right: 36px;
+
+border-radius: 15px;
+border: none;
+`
+const Plus = styled.div`
+position: absolute;
+right: 350px;
+cursor: pointer;
 `

@@ -1,0 +1,152 @@
+.wrapper-modal {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(0, 0, 0, 0.12);
+  display: flex;
+  justify-content: center;
+}
+
+.presentation {
+  z-index: 1200;
+  position: absolute;
+}
+
+.modal-close {
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  color: #F2F3ED;
+}
+.modal {
+  position: fixed; /* position을 fixed로 변경 */
+  top: 50%; /* 화면의 수직 중앙 */
+  left: 50%; /* 화면의 수평 중앙 */
+  transform: translate(-50%, -50%); /* 수직, 수평 중앙 정렬을 위한 변환 */
+  width: 700px;
+  height: 600px;
+  max-width: 1000px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+              0px 5px 8px 0px rgba(0, 0, 0, 0.14),
+              0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  background: #111;
+  overflow: hidden;
+  border-radius: 50px;
+  transition: all 400ms ease-in-out 2s;
+  animation: fadeIn 400ms;
+}
+/* @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+} */
+
+.group-explain {
+  border: 1px solid white;
+  border-radius: 5px;
+  width: 600px;
+  height: 250px;
+  padding: 14px;
+  position: relative;
+  margin: 20px auto; /* 수직 가운데 정렬을 위한 margin */
+}
+.groupLeaderName {
+  display: block;
+}
+
+.groupInfo {
+  display: flex;
+  justify-content: space-between; /* 요소들 사이의 간격을 최대로 설정 */
+  align-items: center; /* 요소들을 수직 중앙 정렬 */
+}
+.groupLeaderName,
+.memberCount {
+  display: flex; /* 내부의 span 요소들도 수평으로 배열하기 위해 flex 설정 */
+  align-items: center; /* 내부의 span 요소들을 수직 중앙 정렬 */
+}
+
+.groupLeaderName span,
+.memberCount span {
+  margin: 0 10px; /* span 요소들 사이의 간격 조절 */
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between; /* 버튼들을 양쪽 끝에 배치 */
+}
+
+.buttons button {
+  width: 300px;
+  height: 100px;
+  margin: 0 40px;
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 30px;
+  text-align: center;
+}
+
+
+.modal__content {
+  padding: 40px;
+  color: white;
+  display: flex; /* 컨텐츠들이 블록 수준 요소로 쌓이게 함 */
+  flex-direction: column;
+
+}
+
+.modal__title {
+  padding: 0;
+  font-size: 40px;
+  margin: 16px 0;
+}
+
+.modal__details {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.modal__overview {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.modal::-webkit-scrollbar {
+  display: none;
+  visibility: hidden;
+}
+
+@media screen and (max-height: 768px) {
+  .wrapper-modal {
+    align-items: unset;
+    padding-top: 2rem;
+  }
+
+  .modal {
+    overflow-y: scroll;
+  }
+}
+@media screen and (max-width: 768px) {
+  .modal__overview {
+    font-size: 16px;
+  }
+
+  .modal__details {
+    font-size: 16px;
+  }
+
+  .wrapper-modal {
+    padding: 0;
+  }
+
+  .modal {
+    overflow-y: scroll !important;
+  }
+}

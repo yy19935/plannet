@@ -1,39 +1,34 @@
+import axios from 'axios';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Index = () => {
+const SocialLogin = () => {
+
+  const navigate = useNavigate();
+  const key = '9b6406df79063ad0374f7041853af131'
+  const redirectUrl = 'http://localhost:3000/main'
+
+  // oauth 요청 URL
+  const handleLogin = () => {
+    const kakakURL = `https://kauth.kakao.com/oauth/authorize?client_id=${key}&redirect_uri=${redirectUrl}&response_type=code`;
+    // 사용자를 카카오 로그인 페이지로 리다이렉트
+    window.location.href = kakakURL;
+  }
 
 
-  function KakaoLoginButton() {
-    // 카카오 로그인 요청을 보내는 함수
-    const handleKakaoLogin = () => {
-        // 카카오 로그인 실행
-        window.Kakao.Auth.login({
-            success: function (authObj) {
-                // 로그인 성공 시 카카오에서 제공하는 인증 코드를 얻음
-                const code = authObj.code;
+  
 
-                // 카카오 로그인 요청을 백엔드로 보냄
-                fetch(`/kakaoLogin?code=${code}`)
-                    .then(response => {
-                        if (response.ok) {
-                            // 로그인 성공 시 추가 작업 수행 (예: 리다이렉트)
-                            window.location.href = '/';
-                        } else {
-                            // 로그인 실패 시 에러 처리
-                            console.error('로그인 실패:', response.statusText);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('네트워크 에러:', error);
-                    });
-            },
-            fail: function (err) {
-                // 카카오 로그인 실패 시 처리
-                console.error('카카오 로그인 실패:', err);
-            },
-        });
-    };}
+
+
+
+
+
+
+
+
+
+
 
   return (
     <LoginStyle>
@@ -42,15 +37,15 @@ export const Index = () => {
           Sign-up
         </Title>
         <Text>sign up with social account</Text>
-        <LoginButton >Google Login</LoginButton>
+        <LoginButton>Google Login</LoginButton>
         <NaverButton>Naver Login</NaverButton>
-        <KakaoButton onClick={KakaoLoginButton}>Kakao Login</KakaoButton>
+        <KakaoButton onClick={handleLogin}>Kakao Login</KakaoButton>
       </Center>
     </LoginStyle>
   );
 }
 
-export default Index;
+export default SocialLogin;
 
 const LoginStyle = styled.div`
   margin-top: 70px;
@@ -140,4 +135,3 @@ const KakaoButton = styled.button`
     background-color: #383838
   }
 `;
-
