@@ -1,7 +1,7 @@
 .wrapper-modal {
   position: fixed;
   inset: 0px;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: rgba(66, 66, 66, 0.432);
   display: flex;
   justify-content: center;
 }
@@ -13,42 +13,49 @@
 
 .modal-close {
   position: absolute;
-  right: 40px;
+  right: 35px;
   top: 20px;
   cursor: pointer;
   z-index: 1000;
-  color: #F2F3ED;
+  color: #1c1c1c;
 }
 .modal {
-  position: fixed; /* position을 fixed로 변경 */
-  top: 50%; /* 화면의 수직 중앙 */
-  left: 50%; /* 화면의 수평 중앙 */
-  transform: translate(-50%, -50%); /* 수직, 수평 중앙 정렬을 위한 변환 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 700px;
   height: 600px;
   max-width: 1000px;
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
               0px 5px 8px 0px rgba(0, 0, 0, 0.14),
               0px 1px 14px 0px rgba(0, 0, 0, 0.12);
-  background: #111;
+  background: #fcfafa;
   overflow: hidden;
   border-radius: 50px;
   transition: all 400ms ease-in-out 2s;
-  animation: fadeIn 400ms;
+  animation: fadeIn 400ms forwards; /* 키프레임 애니메이션을 진행된 상태로 유지 */
 }
-/* @keyframes fadeIn {
+
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.5);
+    transform: translate(-50%, -50%) scale(0.5); /* 모달이 화면 중앙에서 축소되어 나타남 */
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1); /* 모달이 화면 중앙에서 원래 크기로 나타남 */
   }
-} */
+}
 
+.group-name {
+  position: relative;
+  margin: 10px auto; /* 수직 가운데 정렬을 위한 margin */
+  font-size: 25px;
+  font-weight: bold;
+}
 .group-explain {
-  border: 1px solid white;
+  border: 1px solid #1c1c1c;;
   border-radius: 5px;
   width: 600px;
   height: 250px;
@@ -78,13 +85,17 @@
 
 .buttons {
   display: flex;
-  justify-content: space-between; /* 버튼들을 양쪽 끝에 배치 */
+  justify-content: center; /* 버튼들을 양쪽 끝에 배치 */
 }
 
 .buttons button {
-  width: 300px;
-  height: 100px;
+  width: 240px;
+  height: 80px;
   margin: 0 40px;
+  border-radius: 40px;
+  border: none;
+  background-color: #1c1c1c;
+  color:#ecebe4;
 
   font-family: "Roboto", sans-serif;
   font-weight: 700;
@@ -92,11 +103,23 @@
   font-size: 30px;
   text-align: center;
 }
+.buttons button:hover {
+  border: none;
+  background-color:  #383838;
+
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 30px;
+  text-align: center;
+  color:#ecebe4
+}
+
 
 
 .modal__content {
   padding: 40px;
-  color: white;
+  color: #1c1c1c;;
   display: flex; /* 컨텐츠들이 블록 수준 요소로 쌓이게 함 */
   flex-direction: column;
 
@@ -123,7 +146,7 @@
   visibility: hidden;
 }
 
-@media screen and (max-height: 768px) {
+/* @media screen and (max-height: 768px) {
   .wrapper-modal {
     align-items: unset;
     padding-top: 2rem;
@@ -149,4 +172,7 @@
   .modal {
     overflow-y: scroll !important;
   }
-}
+} */
+
+
+

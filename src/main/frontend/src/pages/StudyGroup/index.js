@@ -23,26 +23,27 @@ const StudyGroup = () => {
 
 
 
-    return (
+  return (
 
-      <Container>
+    <Container>
 
-        <Text>나의 스터디 그룹</Text>
-        <BoxContainer1>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        </BoxContainer1>
+      <Text>나의 스터디 그룹</Text>
+      <BoxContainer1>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+      </BoxContainer1>
 
-        <Text>인기 스터디 그룹</Text>
-        <BoxContainer1>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)}/>
-        </BoxContainer1>
+      <Text>인기 스터디 그룹</Text>
+      <BoxContainer1>
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+      </BoxContainer1>
 
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <Dropdown>
           <DropdownButton onClick={toggleDropdown}>
             {selectItem ? selectItem : '과목별'}
@@ -52,41 +53,46 @@ const StudyGroup = () => {
             <a href="#" onClick={() => menuClick('React')}>React</a>
             <a href="#" onClick={() => menuClick('HTML/CSS')}>HTML/CSS</a>
           </DropdownList>
-
-          {/* Plus 컴포넌트에 onClick 이벤트 핸들러 추가 */}
-          <Plus>+</Plus>
-          <GroupSearchInput placeholder='검색'></GroupSearchInput>
         </Dropdown>
-        <BoxContainer2>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-          <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)}/>
-        </BoxContainer2>
+
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+          <Plus style={{ marginRight: '10px' }}>+</Plus>
+          <GroupSearchInput placeholder='검색' style={{ marginRight: '10px' }} />
+          <Search>검색</Search>
+        </div>
+      </div>
 
 
-        <Pagination
-          activePage={1} // 현재 페이지
-          itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
-          totalItemsCount={450} // 총 아이템 갯수
-          pageRangeDisplayed={5} // paginator의 페이지 범위
-          prevPageText={"‹"} // "이전"을 나타낼 텍스트
-          nextPageText={"›"} // "다음"을 나타낼 텍스트
-          // onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
-        />
-          {modalOpen && <CreatingStudyGroupModal setModalOpen={setModalOpen} />}
-      </Container>
+      <BoxContainer2>
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+      </BoxContainer2>
 
-    )
-  }
+
+      <Pagination
+        activePage={1} // 현재 페이지
+        itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
+        totalItemsCount={450} // 총 아이템 갯수
+        pageRangeDisplayed={5} // paginator의 페이지 범위
+        prevPageText={"‹"} // "이전"을 나타낼 텍스트
+        nextPageText={"›"} // "다음"을 나타낼 텍스트
+      // onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
+      />
+      {modalOpen && <CreatingStudyGroupModal setModalOpen={setModalOpen} />}
+    </Container>
+
+  )
+}
 
 export default StudyGroup
 
@@ -188,7 +194,7 @@ border-radius: 80px;
 cursor: pointer;
 border-width: 0;
 width: 180px;
-height: 35px;
+height: 45px;
 background-color: #1c1c1c;
 box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
 
@@ -217,16 +223,28 @@ margin: 0;
 
 const GroupSearchInput = styled.input`
 width: 300px;
-height: 35px;
-padding-right: 0;
-margin-left: auto;
-padding-right: 36px;
-
+height: 45px;
 border-radius: 15px;
 border: none;
 `
 const Plus = styled.div`
-position: absolute;
-right: 350px;
 cursor: pointer;
+`
+
+const Search = styled.button`
+border-radius: 80px;
+cursor: pointer;
+border-width: 0;
+width: 80px;
+height: 45px;
+background-color: #1c1c1c;
+box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
+
+
+font-size: 15px;
+color: #F2F3ED;
+
+&:hover {
+  background-color: #383838;
+}
 `

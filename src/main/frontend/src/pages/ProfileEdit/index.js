@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { RiSettings4Fill } from "react-icons/ri";
 
 // import './index.css'
 
@@ -84,7 +85,7 @@ const ProfileEdit = () => {
       <div className='container'>
         <form onSubmit={handleSubmit}>
           <div className='ImageBox'>
-            <label htmlFor='fileInput'>파일선택</label>
+            <label htmlFor='fileInput'><RiSettings4Fill /></label>
             {/* 이미지 미리보기 */}
             {previewUrl && <img src={previewUrl} alt='프로필 이미지 미리보기' />}
           </div>
@@ -144,10 +145,11 @@ const ProfileEditContainer = styled.div`
 
   label {
     position: absolute;
-    top: 0; /* 이미지 박스 상단에 위치 */
-    left: 0; /* 이미지 박스 왼쪽에 위치 */
+    top: 7px; /* 이미지 박스 상단에 위치 */
+    right: 7px; /* 이미지 박스 왼쪽에 위치 */
     background-color: rgba(255, 255, 255, 0); /* 라벨의 배경색 */
     padding: 5px 10px; /* 라벨의 내부 여백 */
+    cursor: pointer; 
   }
 
   .profileBox {
