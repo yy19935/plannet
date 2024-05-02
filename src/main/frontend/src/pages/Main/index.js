@@ -2,9 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 
 const Index = () => {
-  useEffect(() => {
-    handleKakaoRedirect();
-  }, []); 
+
 
   const handleKakaoRedirect = () => {
     const urlParams = new URLSearchParams(window.location.search);
