@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -80,15 +81,15 @@ public class MemberService {
 
         if (cnt > 0 && !file.isEmpty()) {
             PlanNetFile fileInfo = fileService.selectFile(member.getMemberNo(), "MB");
-            PlanNetFile fileRes;
+            int fileResCnt = 0;
 
             if (fileInfo != null) {
-                fileRes = fileService.updateFile(file, fileInfo, "MB", member.getMemberNo());
+                fileResCnt = fileService.updateFile(file, fileInfo, "MB", member.getMemberNo());
             } else {
-                fileRes = fileService.insertFile(file, "MB", member.getMemberNo());
+                fileResCnt = fileService.insertFile(file, "MB", member.getMemberNo());
             }
 
-            if (fileRes != null) {
+            if (fileResCnt > 0) {
                 resultMap.put("result", "success");
             } else {
                 resultMap.put("result", "fail");
@@ -104,5 +105,17 @@ public class MemberService {
             }
         }
         return resultMap;
+    }
+
+    // 다중 파일 업로드 테스트 [추후 삭제 예정]
+    public Map<String, Object> filesInsert(List<MultipartFile> files, int pNo) {
+        Map<String, Object> result = new HashMap<>();
+        int cnt = fileService.insertFiles(files, "MB", pNo);
+
+        if (cnt > 0) {
+            result.put("result", "success");
+        }
+
+        return result;
     }
 }
