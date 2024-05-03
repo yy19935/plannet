@@ -24,6 +24,17 @@
         )
     </insert>
 
+    <insert id="insertFiles" parameterType="list">
+        INSERT INTO FILE (
+        P_NO, ORIGINAL_FILE_NM, FILE_NM, FILE_PATH, FILE_SIZE, P_TYPE
+        ) VALUES
+        <foreach item="file" collection="list" separator=",">
+            (
+            #{file.pNo}, #{file.originalFileName}, #{file.fileName}, #{file.filePath}, #{file.fileSize}, #{file.pType}
+            )
+        </foreach>
+    </insert>
+
     <update id="updateFile" parameterType="PlanNetFile">
         UPDATE FILE
         SET

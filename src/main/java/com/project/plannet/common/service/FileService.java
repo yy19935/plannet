@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,7 +25,7 @@ public class FileService {
     private PlanNetFile saveFile(MultipartFile upFile){
         File folder = new File(filePath);
 
-        if(folder.exists() == false){
+        if(!folder.exists()){
             // 폴더 생성
             folder.mkdir();
         }
@@ -56,7 +58,7 @@ public class FileService {
     }
 
     // 파일 저장
-    public PlanNetFile insertFile(MultipartFile upFile, String pType, int pNo){
+    public int insertFile(MultipartFile upFile, String pType, int pNo){
         // 실제 파일 저장
         PlanNetFile planNetFile = saveFile(upFile);
         int upFileRes = 0;
@@ -68,25 +70,48 @@ public class FileService {
             // 파일 정보 DB 저장
             upFileRes = mapper.insertFile(planNetFile);
         }
-        return upFileRes > 0 ? planNetFile : null;
+        return upFileRes;
+    }
+
+    // 다중 파일 저장
+    public int insertFiles(List<MultipartFile> upFiles, String pType, int pNo) {
+        List<PlanNetFile> files = new ArrayList<>();
+        int upFilesRes = 0;
+
+        for (MultipartFile upFile : upFiles) {
+            // 실제 파일 저장
+            PlanNetFile uploadRes = saveFile(upFile);
+            assert uploadRes != null;
+            uploadRes.setPType(pType);
+            uploadRes.setPNo(pNo);
+
+            files.add(uploadRes);
+        }
+
+        if (upFiles.size() == files.size()) {
+            // 파일 정보 DB 저장
+            upFilesRes = mapper.insertFiles(files);
+        }
+
+        return upFilesRes;
     }
 
     // 파일 수정
-    public PlanNetFile updateFile(MultipartFile upFile, PlanNetFile planNetFile, String pType, int pNo){
+    public int updateFile(MultipartFile upFile, PlanNetFile planNetFile, String pType, int pNo){
         // 실제 파일 삭제
         boolean delRes = deleteFile(filePath + "/" + planNetFile.getFileName());
-        PlanNetFile updateFileVo = null;
+        int updateFileCnt = 0;
 
         if (delRes){
             // 파일 정보 DB 삭제
             int updateFileRes = mapper.deleteFile(planNetFile.getFNo());
             if (updateFileRes > 0) {
                 // 파일 저장
-                updateFileVo = insertFile(upFile, pType, pNo);
+                updateFileCnt = insertFile(upFile, pType, pNo);
             }
         }
 
-        return updateFileVo;
+        return updateFileCnt;
     }
 
     // 실제 파일 삭제
