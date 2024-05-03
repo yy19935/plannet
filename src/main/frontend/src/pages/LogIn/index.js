@@ -7,7 +7,7 @@ const SocialLogin = () => {
 
   const navigate = useNavigate();
   const key = '9b6406df79063ad0374f7041853af131'
-  const redirectUrl = 'http://localhost:3000/main'
+  const redirectUrl = 'http://localhost:3000/redirect'
 
   // oauth 요청 URL
   const handleLogin = () => {

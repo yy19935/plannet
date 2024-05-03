@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { RiSettings4Fill } from "react-icons/ri";
+import { UserContext } from '../../context/UserContext';
 
 // import './index.css'
 
 
 const ProfileEdit = () => {
+
+  const { user, updateUser } = useContext(UserContext);
   // 사진등록 미리보기
   const [nickname, setNickname] = useState('');  
   const [statusMsg, setStatusMsg] = useState('');
@@ -44,13 +47,10 @@ const ProfileEdit = () => {
   }
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,) => {
     e.preventDefault();
     const formData = new FormData()
-    // const memberData = {memberNo: 6, nickname, statusMsg};
-    // formData.append('file', file)
-    // formData.append('member', JSON.stringify(memberData));
-    const memberNo = 6
+    const memberNo = user.memberNo
     formData.append('memberNo', memberNo); 
     formData.append('nickname', nickname);
     formData.append('statusMsg', statusMsg);
@@ -69,8 +69,11 @@ const ProfileEdit = () => {
         'Content-Type': 'multipart/form-data'
       }
     })
-    .then((result) => { alert('프로필이 업데이트 되었습니다.')
-      console.log(result.date)
+    .then((result) => { 
+      // 사용자 정보 업데이트
+      const updatedUserData = { ...user, nickname, statusMsg };
+      updateUser(updatedUserData);
+      alert('프로필이 업데이트 되었습니다.');
       navigate('/main');
     })
     .catch ((error) => {

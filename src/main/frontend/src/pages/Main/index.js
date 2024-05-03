@@ -1,34 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import Nav from '../../component/Nav';
 
-const Index = () => {
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    if (!mounted) {
-      handleKakaoRedirect();
-      setMounted(true);
-    }
-  }, [mounted]); // mounted 상태가 변경될 때만 useEffect 실행
+const Index = ({userData}) => {
 
-  const handleKakaoRedirect = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    const requestURL = `http://localhost:8080/kakaoLogin?code=${code}`;
-
-    axios.get(requestURL)
-      .then((response) => {
-        // 요청 성공 시 실행할 코드
-        console.log('전송');
-      })
-      .catch((error) => {
-        // 요청 실패 시 실행할 코드
-        console.error(error);
-      });
-  };
 
   return (
+    <div>
     <div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />메인 페이지</div>
+    </div>
   );
 };
 
