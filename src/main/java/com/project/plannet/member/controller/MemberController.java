@@ -52,10 +52,4 @@ public class MemberController {
     public Map<String, Object> update(@ModelAttribute Member member, @RequestParam MultipartFile file){
         return memberService.update(member, file);
     }
-
-    // 다중 파일 업로드 테스트 [추후 삭제 예정]
-    @PostMapping("/test/files")
-    public Map<String, Object> insertFiles(@ModelAttribute Member member, @RequestParam List<MultipartFile> files){
-        return memberService.filesInsert(files, member.getMemberNo());
-    }
 }

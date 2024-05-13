@@ -106,16 +106,4 @@ public class MemberService {
         }
         return resultMap;
     }
-
-    // 다중 파일 업로드 테스트 [추후 삭제 예정]
-    public Map<String, Object> filesInsert(List<MultipartFile> files, int pNo) {
-        Map<String, Object> result = new HashMap<>();
-        int cnt = fileService.insertFiles(files, "MB", pNo);
-
-        if (cnt > 0) {
-            result.put("result", "success");
-        }
-
-        return result;
-    }
 }

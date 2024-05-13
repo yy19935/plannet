@@ -4,14 +4,12 @@ import com.project.plannet.common.mapper.FileMapper;
 import com.project.plannet.common.vo.PlanNetFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +17,8 @@ public class FileService {
 
     private final FileMapper mapper;
 
-    final static private String filePath = "C:\\planNetFile";
+//    final static private String filePath = "C:\\planNetFile";
+    final static private String filePath = "/Users/kimjoohwan/Desktop/etc/";
 
     // 실제 파일 저장
     private PlanNetFile saveFile(MultipartFile upFile){
@@ -32,8 +31,7 @@ public class FileService {
         System.out.println("savePath : " + filePath);
 
         String originalFileName = upFile.getOriginalFilename();
-        String fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS"));
-        fileName += originalFileName.substring(originalFileName.lastIndexOf("."));
+        String fileName = makeUUID(originalFileName);
         String fileNamePath = filePath + "/" + fileName;
         int fileSize = (int) upFile.getSize();
 
@@ -132,5 +130,11 @@ public class FileService {
         planNetFile.setFilePath(filePath);
 
         return planNetFile;
+    }
+
+    private String makeUUID(String fileNm){
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        String extension = StringUtils.getFilenameExtension(fileNm);
+        return uuid + "." + extension;
     }
 }
