@@ -17,8 +17,8 @@ public class FileService {
 
     private final FileMapper mapper;
 
-//    final static private String filePath = "C:\\planNetFile";
-    final static private String filePath = "/Users/kimjoohwan/Desktop/etc/";
+    final static private String filePath = "C:\\planNetFile";
+//    final static private String filePath = "/Users/kimjoohwan/Desktop/etc/";
 
     // 실제 파일 저장
     private PlanNetFile saveFile(MultipartFile upFile){
