@@ -1,15 +1,31 @@
 // Nav 컴포넌트
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import axios from 'axios';
 
 
 const Nav = () => {
   const { pathname } = useLocation();
   const { user } = useContext(UserContext); // UserContext에서 user 정보 가져오기
+  const [profileImageSrc, setProfileImageSrc] = useState('/images/pearl.png');
+  
 
+  axios({
+    method: 'GET',
+    url: `http://localhost:8080/myPage/${user.memberNo}`,
 
+  })
+  .then((result) => { 
+    const fileName = result.data.file.fileName;
+    const updatedProfileImageSrc = fileName ? `C:\\planNetFile\\${fileName}` : '/images/pearl.png';
+    setProfileImageSrc(updatedProfileImageSrc);
+  })
+  .catch ((error) => {
+    console.error( error);
+
+  })
   
 
   return (
@@ -20,7 +36,7 @@ const Nav = () => {
       {pathname === '/' || pathname === '/login'
         ? <Login onClick={() => (window.location.href = "login")}>Login</Login>
         : <ProfileBox>
-           <ProfileImage src={user && user.file ? user.file : '/images/pearl.png'} />
+            <ProfileImage src={profileImageSrc} />
             <DropDown>
               
             <li>{user.nickname}</li>
