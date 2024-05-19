@@ -1,25 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import Pagination from 'react-js-pagination'
 import './index.css'
 import CreatingStudyGroupModal from '../../component/CreatingStudyGroupModal';
+import axios from 'axios';
 
 
 const StudyGroup = () => {
 
   const [isOpen, setIsOpen] = useState(false);
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-  const [modalOpen, setModalOpen] = useState(false)
-
-
-  const [selectItem, setSelectItem] = useState(null)
   const menuClick = (item) => {
     setSelectItem(item)
     setIsOpen(false);
   }
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectItem, setSelectItem] = useState(null)
+  const [studyGroups, setStudyGroups] = useState([]);
+
+
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/studyGroup/list')
+      .then((response) => {
+        setStudyGroups(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('스터디그룹:', error);
+      });
+  }, []);
 
 
 
@@ -29,10 +43,15 @@ const StudyGroup = () => {
 
       <Text>나의 스터디 그룹</Text>
       <BoxContainer1>
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox onClick={() => setModalOpen(!modalOpen)} />
+        <StudyGroupBox>
+          <GroupTitle>수학마스터</GroupTitle>
+          <GroupMsg> 그룹설명란입니다 그룹설명 그룹설명란입니다 그룹설명란입니다 그룹설명란입니다 그룹설명란입니다 그룹설명 그룹설명란입니다 그룹설명란입니다 그룹설명란입니다.</GroupMsg>
+          <GroupInfo>
+            <Profile src='/images/다운로드.jpg' />
+            <ProfileName>윤정</ProfileName>
+            <Count>정원표기</Count>
+          </GroupInfo>
+        </StudyGroupBox>
       </BoxContainer1>
 
       <Text>인기 스터디 그룹</Text>
@@ -64,18 +83,17 @@ const StudyGroup = () => {
 
 
       <BoxContainer2>
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
-        <StudyGroupBox2 onClick={() => setModalOpen(!modalOpen)} />
+         {studyGroups.map(group => (
+        <StudyGroupBox key={group.id} onClick={() => setModalOpen(!modalOpen)}>
+          <GroupTitle>{group.groupName}</GroupTitle>
+          <GroupMsg>{group.groupDesc} </GroupMsg>
+          <GroupInfo>
+            <Profile src={group.groupDesc} />
+            <ProfileName>{group.nickname}</ProfileName>
+            <Count>{group.readCnt} / {group.memberCnt}</Count>
+          </GroupInfo>
+        </StudyGroupBox>
+       )) }
       </BoxContainer2>
 
 
@@ -147,38 +165,81 @@ const Container = styled.div`
 `;
 const BoxContainer1 = styled.div`
   display: flex;
-  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
-  justify-content: center; /* 요소들을 간격을 둬서 나열 */
+  flex-wrap: wrap; 
+  justify-content: center; 
 `
 const StudyGroupBox = styled.div`
   margin: 35px 8px;
   width: 290px;
   height: 180px;
   border-radius: 20px;
-  background-color: #1c1c1c;
+  background-color: #FFFFFF;
   flex-shrink: 0;
-  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
+  flex-wrap: wrap; 
+  padding: 15px;
+`
+const GroupTitle = styled.div`
+  font-size: 28px;
+  margin: 25px 0 10px 0;
+  font-family: "Pretendard-Regular";
+  font-weight: 900;
+`
+const GroupMsg = styled.div`
+  font-size: 15px;
+  font-family: "Pretendard-Regular";
+  font-weight: 400;
+  height: 54px;
+  overflow: hidden; /* 넘치는 내용을 숨김 */
 
 `
+const GroupInfo = styled.div `
+display: flex;
+align-items: center; /* 세로 중앙 정렬 */
+`
+const Profile = styled.img`
+display: flex;
+align-items: center; /* 내부 요소를 세로 중앙 정렬 */
+margin-right: auto; /* 로그인 메뉴를 오른쪽 끝에 위치시킴 */
+margin: 8px 0 10px 0;
+width: 45px;
+height: 45px; 
+border-radius:50%;
+`
+const ProfileName = styled.div`
+font-size: 15px;
+margin: 0 13px;
+font-family: "Pretendard-Regular";
+font-weight: 600;
+`
+const Count = styled.div`
+font-size: 15px;
+font-family: "Pretendard-Regular";
+font-weight: 600;
+margin-left: auto;
+`
+
 const BoxContainer2 = styled.div`
   display: flex;
-  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
+  flex-wrap: wrap; 
   margin-bottom: 20px;
-  justify-content: center; /* 요소들을 간격을 둬서 나열 */
+  justify-content: center; 
 `
 const StudyGroupBox2 = styled.div`
   margin: 30px 28px;
   width: 290px;
   height: 180px;
   border-radius: 20px;
-  background-color: #1c1c1c;
+  background-color: #FFFFFF;
   flex-shrink: 0;
-  flex-wrap: wrap; /* 줄바꿈을 가능하게 함 */
+  flex-wrap: wrap;
 
 `
 const Text = styled.div`
-
+  font-family: "Pretendard-Regular";
+  font-weight: 400;
+  
 `
+
 
 
 
@@ -198,8 +259,8 @@ height: 45px;
 background-color: #1c1c1c;
 box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
 
-
-font-size: 15px;
+font-family: "Pretendard-Regular";
+font-size: 18px;
 color: #F2F3ED;
 
 &:hover {
@@ -240,8 +301,8 @@ height: 45px;
 background-color: #1c1c1c;
 box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
 
-
-font-size: 15px;
+font-family: "Pretendard-Regular";
+font-size: 18px;
 color: #F2F3ED;
 
 &:hover {

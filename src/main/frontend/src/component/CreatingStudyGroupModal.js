@@ -3,6 +3,8 @@ import useOnClickOutside from '../hooks/useOnClickOutside'
 import styled from 'styled-components'
 import './modal.css'
 import { RiCloseLargeLine } from "react-icons/ri";
+
+
 const CreatingStudyGroupModal = ({ setModalOpen }) => {
   const ref = useRef()
 
@@ -24,7 +26,7 @@ const CreatingStudyGroupModal = ({ setModalOpen }) => {
 
           <div className='modal__content'>
             <div className='group-name'>
-              <span>풀스텍 개발자 공부 모집(스터디그룹이름)</span>
+              <span>dd</span>
             </div>
 
             <div className='group-explain'>
@@ -43,7 +45,6 @@ const CreatingStudyGroupModal = ({ setModalOpen }) => {
           </div>
 
           <div className='buttons'>
-            <button  onClick={() => setModalOpen(false)}>취소</button>
             <button>가입신청</button>
           </div>
           

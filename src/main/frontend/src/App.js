@@ -7,7 +7,7 @@ import StudyGroup from './pages/StudyGroup';
 import Redirect from './pages/Redirect';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+
 
 const Layout = () => {
   return (

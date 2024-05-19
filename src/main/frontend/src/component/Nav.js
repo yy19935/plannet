@@ -36,7 +36,7 @@ const Nav = () => {
       {pathname === '/' || pathname === '/login'
         ? <Login onClick={() => (window.location.href = "login")}>Login</Login>
         : <ProfileBox>
-            <ProfileImage src={profileImageSrc} />
+            <ProfileImage src='/images/다운로드.jpg' />
             <DropDown>
               
             <li>{user.nickname}</li>
@@ -64,6 +64,8 @@ const NavWrapper = styled.nav`
   justify-content: left;
   align-items: center;
   padding: 0 36px;
+
+  z-index:100;
 `;
 
 const Menu = styled.a`
@@ -129,4 +131,5 @@ const ProfileBox = styled.div`
 const ProfileImage = styled.img`
   width: 54px;
   height: 54px; 
+  border-radius:50%;
 `;
