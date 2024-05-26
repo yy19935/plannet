@@ -1,56 +1,70 @@
 // Nav 컴포넌트
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 
 
 const Nav = () => {
-  const { pathname } = useLocation();
-  const { user } = useContext(UserContext); // UserContext에서 user 정보 가져오기
+  const navigate = useNavigate();
+  const { user, updateUser, initialUserState } = useContext(UserContext); // setUser 추가
   const [profileImageSrc, setProfileImageSrc] = useState('/images/pearl.png');
-  
 
-  axios({
-    method: 'GET',
-    url: `http://localhost:8080/myPage/${user.memberNo}`,
 
-  })
-  .then((result) => { 
-    const fileName = result.data.file.fileName;
-    const updatedProfileImageSrc = fileName ? `C:\\planNetFile\\${fileName}` : '/images/pearl.png';
-    setProfileImageSrc(updatedProfileImageSrc);
-  })
-  .catch ((error) => {
-    console.error( error);
+  useEffect(() => {
+    if (user && (user.isMember === false || user.isMember === null)) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:8080/myPage/${user.memberNo}`,
+      })
+        .then((result) => {
+          const fileName = result.data.file.fileName;
+          const updatedProfileImageSrc = fileName ? `C:\\planNetFile\\${fileName}` : '/images/pearl.png';
+          setProfileImageSrc(updatedProfileImageSrc);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [user]);
 
-  })
-  
+  const handleLogout = () => {
+    // 로컬 스토리지에서 사용자 데이터 제거
+    localStorage.removeItem("userData");
+    // 사용자 상태값 초기화
+    updateUser(initialUserState);
+    // 로그인 페이지로 이동
+    navigate("/login");
+  };
+
 
   return (
     <NavWrapper>
       <Logo src='/images/earth.png'></Logo>
       <Menu onClick={() => (window.location.href = "main")}>Main</Menu>
       <Menu onClick={() => (window.location.href = "studygroup")}>StudyGroup</Menu>
-      {pathname === '/' || pathname === '/login'
-        ? <Login onClick={() => (window.location.href = "login")}>Login</Login>
-        : <ProfileBox>
-            <ProfileImage src='/images/다운로드.jpg' />
-            <DropDown>
-              
+      {user && (user.isMember === false || user.isMember === null) ?  (
+        <Login onClick={() => (window.location.href = "login")}>Login</Login>
+
+        ) : (
+          <ProfileBox>
+          <ProfileImage src='/images/다운로드.jpg' />
+          <DropDown>
             <li>{user.nickname}</li>
-              <li>My page</li>
-              <li>Sign Out</li>
-              <li onClick={() => (window.location.href = "profileedit")}>회원정보 수정</li>
-            </DropDown>
-          </ProfileBox>
+            <li>My page</li>
+            <li onClick={handleLogout} >Sign Out</li>
+            <li onClick={() => (window.location.href = "profileedit")}>회원정보 수정</li>
+          </DropDown>
+        </ProfileBox>
+        )
       }
     </NavWrapper>
   );
 };
 
 export default Nav;
+
 
 
 const NavWrapper = styled.nav`
