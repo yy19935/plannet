@@ -12,9 +12,8 @@ import { UserProvider } from './context/UserContext';
 
 function App() {
   return (
-    
+    <UserProvider>
     <Router>
-      <UserProvider>
         <Wrapper>
           <Nav />
           <Routes>
@@ -26,8 +25,8 @@ function App() {
             <Route path="profileEdit" element={<ProfileEdit />} />
           </Routes>
         </Wrapper>
-      </UserProvider>
     </Router>
+    </UserProvider>
   );
 }
 

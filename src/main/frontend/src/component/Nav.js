@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { user, updateUser, initialUserState } = useContext(UserContext); // setUser 추가
+  const { user, handleLogout } = useContext(UserContext); // setUser 추가
   const [profileImageSrc, setProfileImageSrc] = useState('/images/pearl.png');
 
 
@@ -24,41 +24,39 @@ const Nav = () => {
           setProfileImageSrc(updatedProfileImageSrc);
         })
         .catch((error) => {
-          console.error(error);
+          console.log(error);
         });
     }
   }, [user]);
 
-  const handleLogout = () => {
-    // 로컬 스토리지에서 사용자 데이터 제거
-    localStorage.removeItem("userData");
-    // 사용자 상태값 초기화
-    updateUser(initialUserState);
-    // 로그인 페이지로 이동
-    navigate("/login");
-  };
+  const handleMenuClick = (path) => {
+    if(!user || user.isMember === false) {
+      window.location.href = "login"
+    } else {
+      window.location.href = path;
+    }
+  }
+
 
 
   return (
     <NavWrapper>
       <Logo src='/images/earth.png'></Logo>
-      <Menu onClick={() => (window.location.href = "main")}>Main</Menu>
-      <Menu onClick={() => (window.location.href = "studygroup")}>StudyGroup</Menu>
-      {user && (user.isMember === false || user.isMember === null) ?  (
-        <Login onClick={() => (window.location.href = "login")}>Login</Login>
-
-        ) : (
-          <ProfileBox>
-          <ProfileImage src='/images/다운로드.jpg' />
+      <Menu onClick={() => handleMenuClick("main")}>Main</Menu>
+      <Menu onClick={() => handleMenuClick("studygroup")}>StudyGroup</Menu>
+      {!user || user.isMember === false ? (
+        <Login onClick={() => window.location.href = "login"}>Login</Login>
+      ) : (
+        <ProfileBox>
+          <ProfileImage src={profileImageSrc} /> {/* 프로필 이미지 경로를 사용 */}
           <DropDown>
             <li>{user.nickname}</li>
-            <li>My page</li>
-            <li onClick={handleLogout} >Sign Out</li>
-            <li onClick={() => (window.location.href = "profileedit")}>회원정보 수정</li>
+            <li onClick={() => window.location.href = "mypage"}>My page</li>
+            <li onClick={handleLogout}>Sign Out</li>
+            <li onClick={() => window.location.href = "profileedit"}>회원정보 수정</li>
           </DropDown>
         </ProfileBox>
-        )
-      }
+      )}
     </NavWrapper>
   );
 };

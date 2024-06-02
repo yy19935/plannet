@@ -15,32 +15,28 @@ const initialUserState = {
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(initialUserState);
-  const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    // 로컬 스토리지에서 유저 정보를 불러옵니다.
+    const savedUser = sessionStorage.getItem("userData");
+    return savedUser ? JSON.parse(savedUser) : initialUserState;
+  });
 
   const updateUser = (userData) => {
     setUser(userData);
   };
 
-
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem("userData"); // 로컬스토리지에서 정보 가져오기 getItem
-    console.log(storedUserData);
-    if (storedUserData) {
-      setUser(JSON.parse(storedUserData));
-    } else {
-      navigate("/Login");
-    }
-  }, []);
-
+  const handleLogout = () => {
+    sessionStorage.removeItem("userData");
+    setUser(initialUserState);
+    window.location.href = "/login";
+  };
   // 유저 정보가 변경될 때마다 로컬 스토리지에 저장
   useEffect(() => {
-    localStorage.setItem("userData", JSON.stringify(user));
+    sessionStorage.setItem("userData", JSON.stringify(user));
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, updateUser,initialUserState }}>
+    <UserContext.Provider value={{ user, updateUser, handleLogout }}>
       {children}
     </UserContext.Provider>
   );

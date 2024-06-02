@@ -5,7 +5,7 @@ import './modal.css'
 import { RiCloseLargeLine } from "react-icons/ri";
 
 
-const CreatingStudyGroupModal = ({ setModalOpen }) => {
+const CreatingStudyGroupModal = ({ setModalOpen, id, groupName, groupDesc, nickname, readCnt, memberCnt }) => {
   const ref = useRef()
 
   useOnClickOutside(ref, () => {
@@ -23,30 +23,30 @@ const CreatingStudyGroupModal = ({ setModalOpen }) => {
             <RiCloseLargeLine />
           </span>
 
-
-          <div className='modal__content'>
-            <div className='group-name'>
-              <span>dd</span>
-            </div>
-
-            <div className='group-explain'>
-              <span>같이 코딩 공부하실 분 모집합니다! 매주 코딩테스트 문제 2개씩 나가며 코드리뷰를 같이합니다!</span>{" "}
-            </div>
-
-            <div className='groupInfo'>
-              <div className='groupLeaderName'>
-                <span>그룹장닉네임</span>
+            <div className='modal__content'>
+              <div className='group-name'>
+                <span>{groupName}</span>
               </div>
 
-              <div className='memberCount'>
-                <span>1/5</span>
+              <div className='group-explain'>
+                <span>{groupDesc}</span>
               </div>
-            </div>       
-          </div>
 
-          <div className='buttons'>
-            <button>가입신청</button>
-          </div>
+              <div className='groupInfo'>
+                <div className='groupLeaderName'>
+                  <span>{nickname}</span>
+                </div>
+
+                <div className='memberCount'>
+                  <span>{readCnt} / {memberCnt}</span>
+                </div>
+              </div>
+
+              <div className='buttons'>
+                <button>가입신청</button>
+              </div>
+            </div>
+      
           
         </div>
       </div>

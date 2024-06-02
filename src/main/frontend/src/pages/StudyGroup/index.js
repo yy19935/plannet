@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import Pagination from 'react-js-pagination'
 import './index.css'
 import CreatingStudyGroupModal from '../../component/CreatingStudyGroupModal';
 import axios from 'axios';
+import Pagination from 'react-js-pagination';
 
 
 const StudyGroup = () => {
@@ -21,11 +21,17 @@ const StudyGroup = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectItem, setSelectItem] = useState(null)
   const [studyGroups, setStudyGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [page, setPage] = useState(1)
+  const itemsCountPerPage = 16
 
-
+  const handleGroupClick = (group) => {
+    setSelectedGroup(group); // 클릭된 그룹 설정
+    setModalOpen(true); // 모달 열기
+  };
 
   useEffect(() => {
-    axios.get('http://localhost:8080/studyGroup/list')
+    axios.get('http://localhost:8080/studyGroup/list?')
       .then((response) => {
         setStudyGroups(response.data);
         console.log(response.data)
@@ -35,8 +41,15 @@ const StudyGroup = () => {
       });
   }, []);
 
-
-
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+  const getCurrentPageData = () => {
+    const startIndex = (page - 1) * itemsCountPerPage;
+    const endIndex = startIndex + itemsCountPerPage;
+    return studyGroups.slice(startIndex, endIndex);
+  };
+ 
   return (
 
     <Container>
@@ -82,31 +95,42 @@ const StudyGroup = () => {
       </div>
 
 
+      {/* 스터디그룹 전체 리스트 */}
       <BoxContainer2>
-         {studyGroups.map(group => (
-        <StudyGroupBox key={group.id} onClick={() => setModalOpen(!modalOpen)}>
-          <GroupTitle>{group.groupName}</GroupTitle>
-          <GroupMsg>{group.groupDesc} </GroupMsg>
-          <GroupInfo>
-            <Profile src={group.groupDesc} />
-            <ProfileName>{group.nickname}</ProfileName>
-            <Count>{group.readCnt} / {group.memberCnt}</Count>
-          </GroupInfo>
-        </StudyGroupBox>
-       )) }
+        {getCurrentPageData().map(group => (
+          <StudyGroupBox key={group.id} onClick={() => handleGroupClick(group)}>
+            <GroupTitle>{group.groupName}</GroupTitle>
+            <GroupMsg>{group.groupDesc}</GroupMsg>
+            <GroupInfo>
+              <Profile src={group.groupDesc} />
+              <ProfileName>{group.nickname}</ProfileName>
+              <Count>{group.readCnt} / {group.memberCnt}</Count>
+            </GroupInfo>
+          </StudyGroupBox>
+        ))}
+
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={itemsCountPerPage}
+          totalItemsCount={studyGroups.length}
+          pageRangeDisplayed={5}
+          prevPageText={"‹"}
+          nextPageText={"›"}
+          onChange={handlePageChange}
+        />
+
+      
+
       </BoxContainer2>
 
 
-      <Pagination
-        activePage={1} // 현재 페이지
-        itemsCountPerPage={10} // 한 페이지랑 보여줄 아이템 갯수
-        totalItemsCount={450} // 총 아이템 갯수
-        pageRangeDisplayed={5} // paginator의 페이지 범위
-        prevPageText={"‹"} // "이전"을 나타낼 텍스트
-        nextPageText={"›"} // "다음"을 나타낼 텍스트
-      // onChange={handlePageChange} // 페이지 변경을 핸들링하는 함수
-      />
-      {modalOpen && <CreatingStudyGroupModal setModalOpen={setModalOpen} />}
+
+      {modalOpen &&
+        <CreatingStudyGroupModal
+          {...selectedGroup}
+          setModalOpen={setModalOpen}
+        />
+      }
     </Container>
 
   )
