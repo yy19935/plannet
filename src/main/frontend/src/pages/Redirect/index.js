@@ -27,7 +27,7 @@ const Redirect = () => {
       .then((response) => {
         const userData = response.data;
         updateUser(userData); // userData 상태 업데이트
-        localStorage.setItem("userData", JSON.stringify(userData))
+        sessionStorage.setItem("userData", JSON.stringify(userData))
         navigate('/main');
       })
       .catch((error) => {
