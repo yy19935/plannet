@@ -9,4 +9,6 @@ import java.util.Map;
 @Mapper
 public interface StudyGroupMapper {
     List<StudyGroup> selectStudyGroupList(Map<String, String> map);
+    int insertStudyGroup(StudyGroup studyGroup);
+    int updateStudyGroup(StudyGroup studyGroup);
 }

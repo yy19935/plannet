@@ -16,6 +16,12 @@
         <result property="deleteDate" column="DELETE_DATE"/>
     </resultMap>
 
+    <resultMap id="studyGroupJoinResultMap" type="StudyGroupJoin">
+        <id property="studyGroupNo" column="SG_NO"/>
+        <id property="memberNo" column="M_NO"/>
+        <id property="joinStatus" column="JOIN_STATUS"/>
+    </resultMap>
+
     <select id="selectStudyGroupList" resultMap="studyGroupResultMap" parameterType="map">
         SELECT SG_NO, M.M_NO, M.NICKNAME, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT, CREATE_DATE, MOD_DATE, DELETE_DATE
         FROM STUDY_GROUP S
@@ -34,9 +40,14 @@
     </select>
 
     <insert id="insertStudyGroup" parameterType="StudyGroup">
-        INSERT INTO STUDY_GROUP(SG_NO, M_NO, GROUP_NM, GROUP_DESC, SG_CATEGORY, CREATE_DATE, MOD_DATE)
-        VALUES(0, #{memberNo}, #{groupName}, #{groupDesc}, #{groupCategory}, DEFAULT, DEFAULT)
+        INSERT INTO STUDY_GROUP(SG_NO, M_NO, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT, CREATE_DATE, MOD_DATE)
+        VALUES(0, #{memberNo}, #{groupName}, #{groupDesc}, #{groupCategory}, #{memberCnt}, DEFAULT, DEFAULT)
     </insert>
+
+    <update id="updateStudyGroup" parameterType="StudyGroup">
+        UPDATE STUDY_GROUP SET GROUP_NM = #{groupName}, GROUP_DESC = #{groupDesc}, MEMBER_CNT = #{memberCnt},
+                               MOD_DATE = CURRENT_TIMESTAMP WHERE SG_NO = #{studyGroupNo}
+    </update>
 
     <update id="updateReadCount" parameterType="map">
         UPDATE STUDY_GROUP SET READ_CNT = #{readCnt} WHERE SG_NO = #{studyGroupNo}
