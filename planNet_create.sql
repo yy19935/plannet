@@ -7,8 +7,8 @@ USE plannet;
 CREATE TABLE MEMBER (
 	M_NO int auto_increment,
 	SNS_ID varchar(20) NOT NULL,
-	NICkNAME varchar(16) NOT NULL,
-	STATUS_MSG varchar(100)	NOT NULL,
+	NICkNAME varchar(16),
+	STATUS_MSG varchar(100),
 	JOIN_DATE datetime NOT NULL default current_timestamp,
 	WITHD_DATE datetime	NULL,
     constraint PK_M_NO primary key (M_NO)
@@ -156,6 +156,7 @@ CREATE TABLE FILE (
 	FILE_SIZE int NOT NULL,
   constraint PK_F_NO primary key (F_NO)
 );
+alter TABLE FILE ADD COLUMN P_TYPE varchar(2) NOT NULL;
 
 -- 공통 코드
 CREATE TABLE COMMON_CODE (
@@ -182,6 +183,4 @@ insert into common_code (pn_code, pn_text) values ('PAUSE', '일시정지');
 insert into common_code (pn_code, pn_text) values ('END_REC', '종료');
 insert into common_code (pn_code, pn_text) values ('SUCCESS', '성공');
 insert into common_code (pn_code, pn_text) values ('FAIL', '실패');
-
-alter table file add column P_TYPE varchar(2) NOT NULL;
 
