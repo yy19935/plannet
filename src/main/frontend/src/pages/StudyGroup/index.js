@@ -6,13 +6,44 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 
 
+
 const StudyGroup = () => {
 
   const [isOpen, setIsOpen] = useState(false);
-  const menuClick = (item) => {
-    setSelectItem(item)
-    setIsOpen(false);
-  }
+
+
+  const menuClick = (category) => {
+    let filteredData = [];
+
+    switch (category) {
+      case '취업':
+        filteredData = studyGroups.filter(item => item.groupCategory === 'EMP');
+        break;
+      case '입시':
+        filteredData = studyGroups.filter(item => item.groupCategory === 'ENT_EX');
+        break;
+      case '국가고시':
+        filteredData = studyGroups.filter(item => item.groupCategory === 'STA_EX');
+        break;
+      case '자격증':
+        filteredData = studyGroups.filter(item => item.groupCategory === 'CERTIFI');
+        break;
+      case 'IT':
+        filteredData = studyGroups.filter(item => item.groupCategory === 'IT');
+        break;
+      default:
+        filteredData = studyGroups; // 기본적으로 모든 데이터 보여주기
+        break;
+    }
+    setSelectItem(category); // 선택된 카테고리 업데이트
+    setFilteredStudyGroups(filteredData); // 필터링된 데이터로 스터디 그룹 상태 업데이트
+    setPage(1); // 페이지를 처음으로 설정 (필요에 따라 변경 가능)
+    setIsOpen(false)
+  };
+
+
+
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -24,6 +55,7 @@ const StudyGroup = () => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [page, setPage] = useState(1)
   const itemsCountPerPage = 16
+  const [filteredStudyGroups, setFilteredStudyGroups] = useState([]);
 
   const handleGroupClick = (group) => {
     setSelectedGroup(group); // 클릭된 그룹 설정
@@ -34,6 +66,7 @@ const StudyGroup = () => {
     axios.get('http://localhost:8080/studyGroup/list?')
       .then((response) => {
         setStudyGroups(response.data);
+        setFilteredStudyGroups(response.data);
         console.log(response.data)
       })
       .catch((error) => {
@@ -47,8 +80,10 @@ const StudyGroup = () => {
   const getCurrentPageData = () => {
     const startIndex = (page - 1) * itemsCountPerPage;
     const endIndex = startIndex + itemsCountPerPage;
-    return studyGroups.slice(startIndex, endIndex);
+    return filteredStudyGroups.slice(startIndex, endIndex); // 필터링된 데이터 사용
   };
+
+
  
   return (
 
@@ -81,9 +116,11 @@ const StudyGroup = () => {
             {selectItem ? selectItem : '과목별'}
           </DropdownButton>
           <DropdownList className={isOpen ? "dropdown-content show" : "dropdown-content"}>
-            <a href="#" onClick={() => menuClick('Java')}>Java</a>
-            <a href="#" onClick={() => menuClick('React')}>React</a>
-            <a href="#" onClick={() => menuClick('HTML/CSS')}>HTML/CSS</a>
+            <a href="#" onClick={() => menuClick('취업')}>취업</a>
+            <a href="#" onClick={() => menuClick('입시')}>입시</a>
+            <a href="#" onClick={() => menuClick('국가고시')}>국가고시</a>
+            <a href="#" onClick={() => menuClick('자격증')}>자격증</a>
+            <a href="#" onClick={() => menuClick('IT')}>IT</a>
           </DropdownList>
         </Dropdown>
 
@@ -96,20 +133,20 @@ const StudyGroup = () => {
 
 
       {/* 스터디그룹 전체 리스트 */}
-      <BoxContainer2>
+      <AllStudyGroup>
         {getCurrentPageData().map(group => (
           <StudyGroupBox key={group.id} onClick={() => handleGroupClick(group)}>
             <GroupTitle>{group.groupName}</GroupTitle>
             <GroupMsg>{group.groupDesc}</GroupMsg>
             <GroupInfo>
-              <Profile src={group.groupDesc} />
+              <Profile src='/images/pearl.png' />
               <ProfileName>{group.nickname}</ProfileName>
               <Count>{group.readCnt} / {group.memberCnt}</Count>
             </GroupInfo>
           </StudyGroupBox>
         ))}
-
-        <Pagination
+      </AllStudyGroup>
+      <Pagination
           activePage={page}
           itemsCountPerPage={itemsCountPerPage}
           totalItemsCount={studyGroups.length}
@@ -118,10 +155,6 @@ const StudyGroup = () => {
           nextPageText={"›"}
           onChange={handlePageChange}
         />
-
-      
-
-      </BoxContainer2>
 
 
 
@@ -242,7 +275,7 @@ font-weight: 600;
 margin-left: auto;
 `
 
-const BoxContainer2 = styled.div`
+const AllStudyGroup = styled.div`
   display: flex;
   flex-wrap: wrap; 
   margin-bottom: 20px;

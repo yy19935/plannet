@@ -13,15 +13,17 @@ const Nav = () => {
 
 
   useEffect(() => {
-    if (user && (user.isMember === false || user.isMember === null)) {
+    if (user) {
       axios({
         method: 'GET',
         url: `http://localhost:8080/myPage/${user.memberNo}`,
       })
         .then((result) => {
-          const fileName = result.data.file.fileName;
-          const updatedProfileImageSrc = fileName ? `C:\\planNetFile\\${fileName}` : '/images/pearl.png';
-          setProfileImageSrc(updatedProfileImageSrc);
+          // 프로필 사진 URL을 상태에 저장
+          const profileImg = result.data.file.fileName
+          setProfileImageSrc(`C:/planNetFile/${profileImg}`);
+          console.log(profileImageSrc); // 파일 경로 콘솔에 출력
+          
         })
         .catch((error) => {
           console.log(error);
@@ -48,7 +50,7 @@ const Nav = () => {
         <Login onClick={() => window.location.href = "login"}>Login</Login>
       ) : (
         <ProfileBox>
-          <ProfileImage src={profileImageSrc} /> {/* 프로필 이미지 경로를 사용 */}
+          <ProfileImage src={profileImageSrc} alt="profile_image" /> {/* 프로필 이미지 경로를 사용 */}
           <DropDown>
             <li>{user.nickname}</li>
             <li onClick={() => window.location.href = "mypage"}>My page</li>
