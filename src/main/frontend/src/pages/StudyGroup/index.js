@@ -116,7 +116,7 @@ const StudyGroup = () => {
             {selectItem ? selectItem : '과목별'}
           </DropdownButton>
           <DropdownList className={isOpen ? "dropdown-content show" : "dropdown-content"}>
-            <a href="#" onClick={() => menuClick('취업')}>취업</a>
+            <a onClick={() => menuClick('취업')}>취업</a>
             <a href="#" onClick={() => menuClick('입시')}>입시</a>
             <a href="#" onClick={() => menuClick('국가고시')}>국가고시</a>
             <a href="#" onClick={() => menuClick('자격증')}>자격증</a>
@@ -149,7 +149,7 @@ const StudyGroup = () => {
       <Pagination
           activePage={page}
           itemsCountPerPage={itemsCountPerPage}
-          totalItemsCount={studyGroups.length}
+          totalItemsCount={filteredStudyGroups.length}
           pageRangeDisplayed={5}
           prevPageText={"‹"}
           nextPageText={"›"}
