@@ -20,6 +20,19 @@ public class StudyGroupController {
 
     @GetMapping("/studyGroup/list")
     public List<StudyGroup> getStudyGroupList(@RequestParam Map<String, String> param){
+        int page = 1;
+
+        Map<String, String> searchMap = new HashMap<String, String>();
+        try {
+            String searchValue = param.get("searchValue");
+            if(searchValue != null && searchValue.length() > 0){
+                String searchType = param.get("searchType");
+                searchMap.put(searchType, searchValue);
+            }else {
+                param.put("searchType", "all");
+            }
+            page = Integer.parseInt(param.get("page"));
+        } catch (Exception e){}
         return service.getStudyGroupList(param);
     }
 
