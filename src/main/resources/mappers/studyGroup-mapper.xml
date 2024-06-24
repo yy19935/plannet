@@ -16,11 +16,11 @@
         <result property="deleteDate" column="DELETE_DATE"/>
     </resultMap>
 
-    <!-- <resultMap id="studyGroupJoinResultMap" type="StudyGroupJoin">
+    <resultMap id="studyGroupJoinResultMap" type="StudyGroupJoin">
         <id property="studyGroupNo" column="SG_NO"/>
         <id property="memberNo" column="M_NO"/>
         <id property="joinStatus" column="JOIN_STATUS"/>
-    </resultMap> -->
+    </resultMap>
 
     <select id="selectStudyGroupList" resultMap="studyGroupResultMap" parameterType="map">
         SELECT SG_NO, M.M_NO, M.NICKNAME, GROUP_NM, GROUP_DESC, SG_CATEGORY, MEMBER_CNT, CREATE_DATE, MOD_DATE, DELETE_DATE
