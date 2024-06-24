@@ -37,24 +37,17 @@ public class StudyGroupController {
     }
 
     @PostMapping("/studyGroup/write")
-    public Map<String, Object> writeStudyGroup(@SessionAttribute(name = "loginMember", required = false) Member loginMember,
-                                               @ModelAttribute StudyGroup studyGroup){
+    public Map<String, Object> writeStudyGroup(@ModelAttribute StudyGroup studyGroup){
         Map<String, Object> response = new HashMap<>();
 
-        if (loginMember == null) {
+        if (studyGroup.getMemberNo() == 0) {
             response.put("result", false);
-            response.put("message", "User is not logged in.");
-            return response;
-        }
-
-        studyGroup.setMemberNo(loginMember.getMemberNo());
-        try {
+            response.put("message", "로그인이 필요합니다.");
+        }else {
             response = service.saveStudyGroup(studyGroup);
-        } catch (Exception e) {
-            response.put("result", false);
-            response.put("message", "Error saving study group: " + e.getMessage());
+            response.put("result", true);
+            response.put("message", "스터디그룹이 성공적으로 등록되었습니다.");
         }
-
-        return response;
+         return response;
     }
 }
