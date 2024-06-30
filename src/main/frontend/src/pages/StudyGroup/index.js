@@ -7,32 +7,42 @@ import Pagination from 'react-js-pagination';
 
 
 
+
+//과목 드롭다운 카테고리 관련
 const StudyGroup = () => {
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const [selectCate, setSelectCate] = useState('')
 
   const menuClick = (category) => {
     let filteredData = [];
 
     switch (category) {
+      case '전체보기':
+        filteredData = studyGroups;
+        break;
       case '취업':
         filteredData = studyGroups.filter(item => item.groupCategory === 'EMP');
+        setSelectCate('EMP'); // 선택된 카테고리 업데이트
         break;
       case '입시':
         filteredData = studyGroups.filter(item => item.groupCategory === 'ENT_EX');
+        setSelectCate('ENT_EX');
         break;
       case '국가고시':
         filteredData = studyGroups.filter(item => item.groupCategory === 'STA_EX');
+        setSelectCate('STA_EX');
         break;
       case '자격증':
         filteredData = studyGroups.filter(item => item.groupCategory === 'CERTIFI');
+        setSelectCate('CERTIFI');
         break;
       case 'IT':
         filteredData = studyGroups.filter(item => item.groupCategory === 'IT');
+        setSelectCate('IT');
         break;
       default:
-        filteredData = studyGroups; // 기본적으로 모든 데이터 보여주기
+        filteredData = studyGroups;
         break;
     }
     setSelectItem(category); // 선택된 카테고리 업데이트
@@ -40,8 +50,6 @@ const StudyGroup = () => {
     setPage(1); // 페이지를 처음으로 설정 (필요에 따라 변경 가능)
     setIsOpen(false)
   };
-
-
 
 
   const toggleDropdown = () => {
@@ -57,11 +65,15 @@ const StudyGroup = () => {
   const itemsCountPerPage = 16
   const [filteredStudyGroups, setFilteredStudyGroups] = useState([]);
 
+
+  //스터디그룹 상세보기(모달) 관련
   const handleGroupClick = (group) => {
     setSelectedGroup(group); // 클릭된 그룹 설정
     setModalOpen(true); // 모달 열기
   };
 
+
+  //스터디그룹 전체 리스트 가져오기 관련
   useEffect(() => {
     axios.get('http://localhost:8080/studyGroup/list?')
       .then((response) => {
@@ -83,7 +95,25 @@ const StudyGroup = () => {
     return filteredStudyGroups.slice(startIndex, endIndex); // 필터링된 데이터 사용
   };
 
+    //스터디그룹 검색관련
+    const [searchValue, setSearchValue] = useState('')
 
+    const handleSearch = (e) => {
+      setSearchValue(e.target.value)
+    }
+  
+    const searchButtonSubmit = (e) => {
+      e.preventDefault()
+      axios.get(`http://localhost:8080/studyGroup/list?searchType=all&searchValue=${searchValue}`)
+        .then((response) => {
+          const filteredData = response.data.filter(item => item.groupCategory === selectCate);
+          setFilteredStudyGroups(filteredData);
+          setPage(1);
+        })
+        .catch((error) => {
+          console.error('검색 오류:', error);
+        });
+    }
  
   return (
 
@@ -116,26 +146,27 @@ const StudyGroup = () => {
             {selectItem ? selectItem : '과목별'}
           </DropdownButton>
           <DropdownList className={isOpen ? "dropdown-content show" : "dropdown-content"}>
-            <a onClick={() => menuClick('취업')}>취업</a>
-            <a href="#" onClick={() => menuClick('입시')}>입시</a>
-            <a href="#" onClick={() => menuClick('국가고시')}>국가고시</a>
-            <a href="#" onClick={() => menuClick('자격증')}>자격증</a>
-            <a href="#" onClick={() => menuClick('IT')}>IT</a>
+            <p onClick={() => menuClick('전체보기')}>전체보기</p>
+            <p onClick={() => menuClick('취업')}>취업</p>
+            <p onClick={() => menuClick('입시')}>입시</p>
+            <p onClick={() => menuClick('국가고시')}>국가고시</p>
+            <p onClick={() => menuClick('자격증')}>자격증</p>
+            <p onClick={() => menuClick('IT')}>IT</p>
           </DropdownList>
         </Dropdown>
 
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+        <form style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }} onSubmit={searchButtonSubmit}>
           <Plus style={{ marginRight: '10px' }}>+</Plus>
-          <GroupSearchInput placeholder='검색' style={{ marginRight: '10px' }} />
-          <Search>검색</Search>
-        </div>
+          <GroupSearchInput placeholder='검색' style={{ marginRight: '10px' }} onChange={handleSearch} />
+          <Search type='submit'>검색</Search>
+        </form>
       </div>
 
 
       {/* 스터디그룹 전체 리스트 */}
       <AllStudyGroup>
         {getCurrentPageData().map(group => (
-          <StudyGroupBox key={group.id} onClick={() => handleGroupClick(group)}>
+          <StudyGroupBox key={group.studyGroupNo} onClick={() => handleGroupClick(group)}>
             <GroupTitle>{group.groupName}</GroupTitle>
             <GroupMsg>{group.groupDesc}</GroupMsg>
             <GroupInfo>
