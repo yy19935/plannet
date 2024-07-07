@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import './index.css'
-import CreatingStudyGroupModal from '../../component/CreatingStudyGroupModal';
+import DetailStudyGroup from '../../component/DetailStudyGroup';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
+import CreateStudyGroup from '../../component/CreateStudyGroup';
 
 
 
@@ -64,6 +65,7 @@ const StudyGroup = () => {
   const [page, setPage] = useState(1)
   const itemsCountPerPage = 16
   const [filteredStudyGroups, setFilteredStudyGroups] = useState([]);
+  const [createStudyGroup, setCreateStudyGroup] = useState(false);
 
 
   //스터디그룹 상세보기(모달) 관련
@@ -71,6 +73,11 @@ const StudyGroup = () => {
     setSelectedGroup(group); // 클릭된 그룹 설정
     setModalOpen(true); // 모달 열기
   };
+
+    //스터디그룹 생성하기(모달) 관련
+    const createStudyGroupModal = () => {
+      setCreateStudyGroup(true); // 모달 열기
+    };
 
 
   //스터디그룹 전체 리스트 가져오기 관련
@@ -156,7 +163,7 @@ const StudyGroup = () => {
         </Dropdown>
 
         <form style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }} onSubmit={searchButtonSubmit}>
-          <Plus style={{ marginRight: '10px' }}>+</Plus>
+          <Plus style={{ marginRight: '10px' }} onClick={() => setCreateStudyGroup(!createStudyGroup)}>+</Plus>
           <GroupSearchInput placeholder='검색' style={{ marginRight: '10px' }} onChange={handleSearch} />
           <Search type='submit'>검색</Search>
         </form>
@@ -190,9 +197,15 @@ const StudyGroup = () => {
 
 
       {modalOpen &&
-        <CreatingStudyGroupModal
+        <DetailStudyGroup
           {...selectedGroup}
           setModalOpen={setModalOpen}
+        />
+      }
+
+      {createStudyGroup &&
+        <CreateStudyGroup
+          setCreateStudyGroup={setCreateStudyGroup}
         />
       }
     </Container>
@@ -257,8 +270,8 @@ const BoxContainer1 = styled.div`
   justify-content: center; 
 `
 const StudyGroupBox = styled.div`
-  margin: 35px 8px;
-  width: 290px;
+  margin: 35px 5px;
+  width: 280px;
   height: 180px;
   border-radius: 20px;
   background-color: #FFFFFF;

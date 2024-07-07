@@ -5,7 +5,7 @@ import './modal.css'
 import { RiCloseLargeLine } from "react-icons/ri";
 
 
-const CreatingStudyGroupModal = ({ setModalOpen, id, groupName, groupDesc, nickname, readCnt, memberCnt }) => {
+const DetailStudyGroup = ({ setModalOpen, id, groupName, groupDesc, nickname, readCnt, memberCnt }) => {
   const ref = useRef()
 
   useOnClickOutside(ref, () => {
@@ -53,6 +53,6 @@ const CreatingStudyGroupModal = ({ setModalOpen, id, groupName, groupDesc, nickn
     </div>
   )
 }
-export default CreatingStudyGroupModal
+export default DetailStudyGroup
 
 
