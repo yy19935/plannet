@@ -24,9 +24,6 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
   const menuClick = (option) => {
     let value;
     switch (option) {
-      case '전체보기':
-        value = 'ALL_VIEW';
-        break;
       case '취업':
         value = 'EMPLOY';
         break;
@@ -45,7 +42,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
       default:
         value = '';
     }
-    setSelectItem(value);
+    setSelectItem(option);
     setIsOpen(false);
   };
 
@@ -55,6 +52,17 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
   const [groupDesc, setGroupDesc] = useState('');
   const [memberCnt, setMemberCnt] = useState('');
   const handleSumbmit = async (e) => {
+    if (!groupName || !groupDesc || !selectItem || !memberCnt) {
+      e.preventDefault()
+      alert('모든 필수 항목을 입력해주세요.') 
+      return;
+    }
+
+    if (memberCnt <= 0 || memberCnt >= 100) {
+      e.preventDefault()
+      alert('그룹 정원은 1에서 99 사이여야 합니다.');
+      return;
+    }
     const formData = new FormData()
     const memberNo = user.memberNo
     formData.append('memberNo', memberNo);
@@ -64,6 +72,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
     formData.append('memberCnt', memberCnt)
     console.log(memberNo)
     console.log(groupName)
+    
 
     axios({
       method: 'POST',
@@ -81,6 +90,9 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
       })
   }
 
+
+
+
   return (
     <div className='presentation' role='presentation'>
       <div className='wrapper-modal'>
@@ -94,41 +106,44 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
 
           <form className='modal__content' onSubmit={handleSumbmit} >
             <h2>스터디 그룹 만들기</h2>
+            <Container>
+              <Text>그룹명</Text>
+              <Input
+                placeholder='그룹명을 입력하세요.'
+                onChange={(e) => { setGroupName(e.target.value) }}
+                
+              />
 
-            <p>그룹명: </p>
-            <input
-              placeholder='그룹명을 입력하세요.'
-              onChange={(e) => { setGroupName(e.target.value) }}
-            />
+              <Dropdown>
+                <DropdownButton onClick={toggleDropdown}>
+                  {selectItem ? selectItem : '과목별'}
+                </DropdownButton>
+                {isOpen && (
+                  <DropdownList>
+                    <p style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => menuClick('취업')}>취업</p>
+                    <p style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => menuClick('입시')}>입시</p>
+                    <p style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => menuClick('국가고시')}>국가고시</p>
+                    <p style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => menuClick('자격증')}>자격증</p>
+                    <p style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => menuClick('IT')}>IT</p>
+                  </DropdownList>
+                )}
+              </Dropdown>
+            </Container>
 
-            <Dropdown>
-              <DropdownButton onClick={toggleDropdown}>
-                {selectItem ? selectItem : '과목별'}
-              </DropdownButton>
-              {isOpen && (
-                <DropdownList>
-                  <p onClick={() => menuClick('전체보기')}>전체보기</p>
-                  <p onClick={() => menuClick('취업')}>취업</p>
-                  <p onClick={() => menuClick('입시')}>입시</p>
-                  <p onClick={() => menuClick('국가고시')}>국가고시</p>
-                  <p onClick={() => menuClick('자격증')}>자격증</p>
-                  <p onClick={() => menuClick('IT')}>IT</p>
-                </DropdownList>
-              )}
-            </Dropdown>
 
-            <p>그룹 설명
-              <input
+
+            <Text>그룹 설명</Text>
+            <BigInput
                 placeholder='어떤 스터디그룹인지 표현해주세요.'
                 onChange={(e) => { setGroupDesc(e.target.value) }}
               />
-            </p>
 
-            <p>그룹 정원</p>
-            <input
+            <Text>그룹 정원
+            <Input
               placeholder='최대 정원'
               onChange={(e) => { setMemberCnt(e.target.value) }}
             />
+            </Text>
 
             <div className='buttons'>
               <button type='submit'>가입신청</button>
@@ -154,29 +169,55 @@ display : inline-block;
 border-radius: 80px;
 cursor: pointer;
 border-width: 0;
-width: 180px;
+width: 120px;
 height: 45px;
-background-color: #1c1c1c;
-box-shadow: 0px 8px 13px rgba(0, 0, 0, .2); /* 그림자 추가 */
+background-color: #ffffff;
+
 
 font-family: "Pretendard-Regular";
-font-size: 18px;
-color: #F2F3ED;
+font-size: 16px;
+color: #383838;
 
 &:hover {
-  background-color: #383838;
+  background-color: #f0efed;
+  color: #383838;
 }
 `
 const DropdownList = styled.ul`
 position: absolute;
 top: 100%;
-left: 0;
 z-index: 10;
-min-width: 160px;
+width: 120px;
 background-color: #ffffff;
 border: 1px solid #ccc;
 border-radius: 4px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 padding: 0;
 margin: 0;
+font-size: 16px;
+`
+const Container = styled.div `
+  display: flex;
+  align-items: center;  // 상하 중앙 정렬
+`
+const Input = styled.input`
+margin: 0 18px;
+width: 380px;
+height: 35px;
+border-radius: 15px;
+border: none;
+`
+const BigInput = styled.textarea`
+width: 600px;
+height: 130px;
+border-radius: 15px;
+border: none;
+resize: none; // 사용자가 크기를 변경하지 못하게 함
+padding: 15px; // 텍스트와 경계 사이의 여백
+box-sizing: border-box; // 패딩과 보더를 전체 크기에 포함
+`
+
+const Text = styled.p `
+font-size: 20px;
+margin: 15px 0;
 `

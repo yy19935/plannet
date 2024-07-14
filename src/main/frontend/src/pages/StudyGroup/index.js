@@ -31,12 +31,12 @@ const StudyGroup = () => {
         setSelectCate('ENT_EX');
         break;
       case '국가고시':
-        filteredData = studyGroups.filter(item => item.groupCategory === 'STA_EX');
-        setSelectCate('STA_EX');
+        filteredData = studyGroups.filter(item => item.groupCategory === 'NAT_EXAM');
+        setSelectCate('NAT_EXAM');
         break;
       case '자격증':
-        filteredData = studyGroups.filter(item => item.groupCategory === 'CERTIFI');
-        setSelectCate('CERTIFI');
+        filteredData = studyGroups.filter(item => item.groupCategory === 'CERT');
+        setSelectCate('CERT');
         break;
       case 'IT':
         filteredData = studyGroups.filter(item => item.groupCategory === 'IT');
