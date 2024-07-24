@@ -3,6 +3,7 @@ package com.project.plannet.scrap.controller;
 import com.project.plannet.scrap.service.ScrapStudyGroupService;
 import com.project.plannet.scrap.vo.ScrapStudyGroup;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,12 @@ public class ScrapStudyGroupController {
     private final ScrapStudyGroupService service;
 
     @PostMapping("/add") // 스크랩 추가
-    public ResponseEntity<String> addScrap(@RequestBody ScrapStudyGroup scrapStudyGroup) {
+    public ResponseEntity<String> addScrap(ScrapStudyGroup scrapStudyGroup) {
         int result = service.insertStudyGroupScrap(scrapStudyGroup);
         if (result > 0) {
             return ResponseEntity.ok("Scrap added successfully.");
         } else {
-            return ResponseEntity.status(500).body("Failed to add scrap.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add scrap.");
         }
     }
 
