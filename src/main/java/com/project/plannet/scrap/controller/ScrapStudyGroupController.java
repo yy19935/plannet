@@ -36,8 +36,8 @@ public class ScrapStudyGroupController {
     }
 
     @GetMapping("/detailList/{M_NO}")
-    public ResponseEntity<List<Map<String, String>>> getDetailScrapList(@PathVariable("M_NO") int M_NO){
-        List<Map<String, String>> detailScrapList = service.getStudyGroupScrapList(M_NO);
+    public ResponseEntity<List<Map<String, Object>>> getDetailScrapList(@PathVariable("M_NO") int M_NO){
+        List<Map<String, Object>> detailScrapList = service.getStudyGroupScrapList(M_NO);
         if (detailScrapList != null && !detailScrapList.isEmpty()) {
             return ResponseEntity.ok(detailScrapList);
         } else {

@@ -21,7 +21,7 @@ public class ScrapStudyGroupService {
         return mapper.selectStudyGroupScrap(M_NO);
     }
 
-    public List<Map<String, String>> getStudyGroupScrapList(int M_NO){
+    public List<Map<String, Object>> getStudyGroupScrapList(int M_NO){
         return mapper.selectStudyGroupScrapList(M_NO);
     }
 

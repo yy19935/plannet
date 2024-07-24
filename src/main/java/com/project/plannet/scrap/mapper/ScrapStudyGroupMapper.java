@@ -10,5 +10,5 @@ import java.util.Map;
 public interface ScrapStudyGroupMapper {
     int insertStudyGroupScrap(ScrapStudyGroup scrapStudyGroup);
     List<ScrapStudyGroup> selectStudyGroupScrap(int M_NO);
-    List<Map<String, String>> selectStudyGroupScrapList(int M_NO);
+    List<Map<String, Object>> selectStudyGroupScrapList(int M_NO);
 }
