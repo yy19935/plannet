@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import './index.css'
 import DetailStudyGroup from '../../component/DetailStudyGroup';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import CreateStudyGroup from '../../component/CreateStudyGroup';
 import { BsBookmark } from "react-icons/bs";
+import { UserContext } from '../../context/UserContext';
 
 
 
@@ -130,10 +131,33 @@ const StudyGroup = () => {
         });
     }
 
-    const handleIconClick = (event) => {
-      event.stopPropagation();
-      // 모달을 띄우는 코드를 여기에 추가
-    };
+
+    const { user } = useContext(UserContext);
+
+    const handleBookmarkClick  = async (e, groupNo) => {
+      e.preventDefault();
+      const formData = new FormData()
+      const memberNo = user.memberNo
+      formData.append('M_NO', memberNo); 
+      formData.append('SG_NO', groupNo);
+
+      axios({
+        method: 'POST',
+        url: `http://localhost:8080/scrapStudyGroup/add`,
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((result) => { 
+        console.log(result)
+      })
+      .catch ((error) => {
+        console.log(error)
+      })
+      }
+  
+    
  
   return (
 
@@ -189,7 +213,7 @@ const StudyGroup = () => {
           <StudyGroupBox key={group.studyGroupNo} onClick={() => handleGroupClick(group)}>
             <GroupHeader>
               <GroupTitle>{group.groupName}</GroupTitle>
-              <IconButton onClick={handleIconClick}>
+              <IconButton onClick={(e) => handleBookmarkClick(e, group.studyGroupNo)}>
                 <BookmarkIcon className="icon" />
               </IconButton>
             </GroupHeader>
