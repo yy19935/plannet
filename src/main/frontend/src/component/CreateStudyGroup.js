@@ -14,7 +14,8 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
   });
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectItem, setSelectItem] = useState(null);
+  const [selectCategory, setSelectCategory] = useState(null);
+  const [category, setCategory] = useState(null);
 
   const toggleDropdown = (event) => {
     event.preventDefault(); // 기본 동작 방지
@@ -25,16 +26,16 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
     let value;
     switch (option) {
       case '취업':
-        value = 'EMPLOY';
+        value = 'EMP';
         break;
       case '입시':
         value = 'ENT_EX';  // '입시' 선택 시 'ENT_EX'로 설정
         break;
       case '국가고시':
-        value = 'NAT_EXAM';
+        value = 'STA_EX';
         break;
       case '자격증':
-        value = 'CERT';
+        value = 'CERTIFI';
         break;
       case 'IT':
         value = 'IT';
@@ -42,7 +43,8 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
       default:
         value = '';
     }
-    setSelectItem(option);
+    setSelectCategory(value);
+    setCategory(option)
     setIsOpen(false);
   };
 
@@ -52,7 +54,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
   const [groupDesc, setGroupDesc] = useState('');
   const [memberCnt, setMemberCnt] = useState('');
   const handleSumbmit = async (e) => {
-    if (!groupName || !groupDesc || !selectItem || !memberCnt) {
+    if (!groupName || !groupDesc || !selectCategory || !memberCnt) {
       e.preventDefault()
       alert('모든 필수 항목을 입력해주세요.') 
       return;
@@ -68,7 +70,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
     formData.append('memberNo', memberNo);
     formData.append('groupName', groupName);
     formData.append('groupDesc', groupDesc);
-    formData.append('groupCategory', selectItem)
+    formData.append('groupCategory', selectCategory)
     formData.append('memberCnt', memberCnt)
     console.log(memberNo)
     console.log(groupName)
@@ -116,7 +118,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
 
               <Dropdown>
                 <DropdownButton onClick={toggleDropdown}>
-                  {selectItem ? selectItem : '과목별'}
+                  {category ? category : '과목별'}
                 </DropdownButton>
                 {isOpen && (
                   <DropdownList>

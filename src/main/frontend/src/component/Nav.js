@@ -117,7 +117,7 @@ const Login = styled.a`
 `;
 const DropDown = styled.ul`
   position: absolute;
-  top: 63px;
+  top: 56px;
   right: 20px;
   background: #ecebe4;
   border: 1px solid rgba(151, 151, 151, 0.34);
@@ -128,12 +128,13 @@ const DropDown = styled.ul`
   letter-spacing: 3px;
   width: 140px;
   height: 150px;
+  pointer-events: none;
   opacity: 0;
 `
 const ProfileBox = styled.div`
   display: flex;
   align-items: center; /* 내부 요소를 세로 중앙 정렬 */
-  margin-left: auto; /* 로그인 메뉴를 오른쪽 끝에 위치시킴 */
+  margin-left: auto; /* 로그인 메뉴를 오른쪽 끝에 위치시킴 */f
   margin-top: 15px;
   &:hover {
     ${DropDown} {

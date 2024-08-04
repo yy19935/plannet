@@ -5,7 +5,7 @@ import DetailStudyGroup from '../../component/DetailStudyGroup';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import CreateStudyGroup from '../../component/CreateStudyGroup';
-
+import { BsBookmark } from "react-icons/bs";
 
 
 
@@ -21,6 +21,7 @@ const StudyGroup = () => {
     switch (category) {
       case '전체보기':
         filteredData = studyGroups;
+        setSelectCate('ALL'); 
         break;
       case '취업':
         filteredData = studyGroups.filter(item => item.groupCategory === 'EMP');
@@ -31,12 +32,12 @@ const StudyGroup = () => {
         setSelectCate('ENT_EX');
         break;
       case '국가고시':
-        filteredData = studyGroups.filter(item => item.groupCategory === 'NAT_EXAM');
-        setSelectCate('NAT_EXAM');
+        filteredData = studyGroups.filter(item => item.groupCategory === 'STA_EX');
+        setSelectCate('STA_EX');
         break;
       case '자격증':
-        filteredData = studyGroups.filter(item => item.groupCategory === 'CERT');
-        setSelectCate('CERT');
+        filteredData = studyGroups.filter(item => item.groupCategory === 'CERTIFI');
+        setSelectCate('CERTIFI');
         break;
       case 'IT':
         filteredData = studyGroups.filter(item => item.groupCategory === 'IT');
@@ -112,15 +113,27 @@ const StudyGroup = () => {
     const searchButtonSubmit = (e) => {
       e.preventDefault()
       axios.get(`http://localhost:8080/studyGroup/list?searchType=all&searchValue=${searchValue}`)
-        .then((response) => {
-          const filteredData = response.data.filter(item => item.groupCategory === selectCate);
-          setFilteredStudyGroups(filteredData);
-          setPage(1);
-        })
+      .then((response) => {
+        let data = response.data;
+        
+        // 전체보기('ALL')이 아닐 경우, selectCate에 따라 필터링
+        if (selectCate && selectCate !== 'ALL') {
+          data = data.filter(item => item.groupCategory === selectCate);
+        }
+    
+        // 필터링된 데이터 설정
+        setFilteredStudyGroups(data);
+        setPage(1);
+      })
         .catch((error) => {
           console.error('검색 오류:', error);
         });
     }
+
+    const handleIconClick = (event) => {
+      event.stopPropagation();
+      // 모달을 띄우는 코드를 여기에 추가
+    };
  
   return (
 
@@ -174,7 +187,12 @@ const StudyGroup = () => {
       <AllStudyGroup>
         {getCurrentPageData().map(group => (
           <StudyGroupBox key={group.studyGroupNo} onClick={() => handleGroupClick(group)}>
-            <GroupTitle>{group.groupName}</GroupTitle>
+            <GroupHeader>
+              <GroupTitle>{group.groupName}</GroupTitle>
+              <IconButton onClick={handleIconClick}>
+                <BookmarkIcon className="icon" />
+              </IconButton>
+            </GroupHeader>
             <GroupMsg>{group.groupDesc}</GroupMsg>
             <GroupInfo>
               <Profile src='/images/pearl.png' />
@@ -271,7 +289,7 @@ const BoxContainer1 = styled.div`
 `
 const StudyGroupBox = styled.div`
   margin: 35px 5px;
-  width: 280px;
+  width: 250px;
   height: 180px;
   border-radius: 20px;
   background-color: #FFFFFF;
@@ -280,16 +298,19 @@ const StudyGroupBox = styled.div`
   padding: 15px;
 `
 const GroupTitle = styled.div`
-  font-size: 28px;
-  margin: 25px 0 10px 0;
+  margin: 10px 0;
   font-family: "Pretendard-Regular";
   font-weight: 900;
-`
+  font-size: 20px;
+  white-space: nowrap; /* 텍스트가 한 줄로 유지되게 합니다 */
+  overflow: hidden; /* 넘치는 부분을 숨깁니다 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 생략 부호를 추가합니다 */
+`;
 const GroupMsg = styled.div`
   font-size: 15px;
   font-family: "Pretendard-Regular";
   font-weight: 400;
-  height: 54px;
+  height: 80px;
   overflow: hidden; /* 넘치는 내용을 숨김 */
 
 `
@@ -410,3 +431,35 @@ color: #F2F3ED;
   background-color: #383838;
 }
 `
+
+const GroupHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px; 
+  `
+
+  const IconButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus {
+    outline: none;
+  }
+  
+  &:hover .icon {
+    color: #555; // 원하는 색상으로 변경
+  }
+`;
+
+const BookmarkIcon = styled(BsBookmark)`
+  width: 24px;
+  height: 24px;
+  color: #333;
+  transition: color 0.3s;
+`;
