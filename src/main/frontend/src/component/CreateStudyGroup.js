@@ -107,7 +107,7 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
           </span>
 
           <form className='modal__content' onSubmit={handleSumbmit} >
-            <h2>스터디 그룹 만들기</h2>
+            <Title>함께 할 스터디그룹을 만들어보세요.</Title>
             <Container>
               <Text>그룹명</Text>
               <Input
@@ -139,16 +139,18 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
                 placeholder='어떤 스터디그룹인지 표현해주세요.'
                 onChange={(e) => { setGroupDesc(e.target.value) }}
               />
-
-            <Text>그룹 정원
-            <Input
-              placeholder='최대 정원'
-              onChange={(e) => { setMemberCnt(e.target.value) }}
-            />
-            </Text>
+            <Container>
+              <Text>그룹 정원
+                <SamllInput
+                  placeholder='0'
+                  onChange={(e) => { setMemberCnt(e.target.value) }}
+                />
+              </Text>
+              <Text2>최대 99명까지 가능합니다.</Text2>
+            </Container>
 
             <div className='buttons'>
-              <button type='submit'>가입신청</button>
+              <button type='submit'>그룹 생성하기</button>
             </div>
           </form>
 
@@ -160,6 +162,10 @@ const CreateStudyGroup = ({ setCreateStudyGroup }) => {
 
 export default CreateStudyGroup;
 
+const Title = styled.p`
+  font-family: "Pretendard-Regular";
+font-size: 32px;
+`
 const Dropdown = styled.li`
 position : relative;
 display : flex;
@@ -172,8 +178,9 @@ border-radius: 80px;
 cursor: pointer;
 border-width: 0;
 width: 120px;
-height: 45px;
+height: 40px;
 background-color: #ffffff;
+width:100px;
 
 
 font-family: "Pretendard-Regular";
@@ -196,7 +203,10 @@ border-radius: 4px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 padding: 0;
 margin: 0;
-font-size: 16px;
+
+font-family: "Pretendard-Regular";
+font-size: 15px;
+font-weight: 400;
 `
 const Container = styled.div `
   display: flex;
@@ -204,14 +214,21 @@ const Container = styled.div `
 `
 const Input = styled.input`
 margin: 0 18px;
-width: 380px;
+width: 315px;
+height: 35px;
+border-radius: 15px;
+border: none;
+`
+const SamllInput = styled.input`
+margin: 0 18px;
+width: 60px;
 height: 35px;
 border-radius: 15px;
 border: none;
 `
 const BigInput = styled.textarea`
-width: 600px;
-height: 130px;
+width: 510px;
+height: 150px;
 border-radius: 15px;
 border: none;
 resize: none; // 사용자가 크기를 변경하지 못하게 함
@@ -220,6 +237,16 @@ box-sizing: border-box; // 패딩과 보더를 전체 크기에 포함
 `
 
 const Text = styled.p `
+font-family: "Pretendard-Regular";
 font-size: 20px;
+font-weight: 400;
 margin: 15px 0;
+position: flex;
+`
+const Text2 = styled.p `
+font-family: "Pretendard-Regular";
+font-size: 14px;
+font-weight: 400;
+margin: 15px 0;
+color: 
 `

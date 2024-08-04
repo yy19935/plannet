@@ -448,13 +448,6 @@ const GroupHeader = styled.div`
   align-items: center;
   justify-content: center;
 
-  &:focus {
-    outline: none;
-  }
-  
-  &:hover .icon {
-    color: #555; // 원하는 색상으로 변경
-  }
 `;
 
 const BookmarkIcon = styled(BsBookmark)`

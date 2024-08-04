@@ -35,6 +35,6 @@ export default App;
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  background-color: #f2f3ed;
+  background-color: #eef0f2;
   overflow: auto;
 `;

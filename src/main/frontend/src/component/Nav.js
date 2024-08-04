@@ -73,7 +73,7 @@ const NavWrapper = styled.nav`
   left: 0;
   right: 0;
   height: 80px;
-  background-color: #F2F3ED;
+  background-color: #eef0f2;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -119,10 +119,11 @@ const DropDown = styled.ul`
   position: absolute;
   top: 56px;
   right: 20px;
-  background: #ecebe4;
-  border: 1px solid rgba(151, 151, 151, 0.34);
-  border-radius: 4px;
-  box-shadow: rgb(0 0 0 /30%) 0px 0px 7px 0px;
+  background: #eef0f2;
+  border-radius: 3px;
+        box-shadow: 
+        0px -4px 8px 0px rgba(255, 255, 255, 0.8), /* 상단 흰색 그림자 */
+        0px 4px 8px rgba(0, 0, 0, 0.2); /* 하단 검정색 그림자 (일반적인 그림자) */
   padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
