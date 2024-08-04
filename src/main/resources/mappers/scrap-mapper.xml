@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 향후 Mapper interface가 정의 될 위치-->
+<mapper namespace="com.project.plannet.scrap.mapper.ScrapStudyGroupMapper">
+
+    <!--스크랩-->
+    <insert id="insertStudyGroupScrap" parameterType="ScrapStudyGroup">
+        INSERT INTO STUDY_GROUP_SCRAP(SG_NO, M_NO) VALUES (#{SG_NO}, #{M_NO})
+    </insert>
+
+    <!--조회-->
+    <select id="selectStudyGroupScrap" resultType="ScrapStudyGroup" parameterType="int">
+        SELECT * FROM STUDY_GROUP_SCRAP WHERE M_NO = #{M_NO}
+    </select>
+
+    <!--스크랩 리스트 출력-->
+    <select id="selectStudyGroupScrapList" resultType="map" parameterType="int">
+        SELECT SGS.*, SG.GROUP_NM, SG.GROUP_DESC, SG.SG_CATEGORY, SG.MEMBER_CNT FROM STUDY_GROUP_SCRAP SGS LEFT JOIN STUDY_GROUP SG on SG.SG_NO = SGS.SG_NO
+                 WHERE SGS.M_NO = #{M_NO}
+    </select>
+
+
+
+</mapper>
